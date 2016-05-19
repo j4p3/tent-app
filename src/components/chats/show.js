@@ -8,33 +8,29 @@ import {
   View
 } from 'react-native'
 
-export default class ChatsShow extends Component {
-  constructor(props) {
-    super(props);
+import ChatView from '../util/chatview'
 
+var ChatsShow = React.createClass({
+  getInitialState() {
     var items = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
+      rowHasChanged: (r1, r2) => r1.name !== r2.name || r1.content !== r2.content,
     })
 
-    this.state = {
-      items: items.cloneWithRows(seeds)
+    return {
+      items: items.cloneWithRows(seeds),
+      _items: seeds
     }
 
-  }
+  },
 
-  render() {
-    return (
-      <View>
-        <Text>Chats: show</Text>
-        <ListView
-          style={styles.chat}
-          dataSource={this.state.items}
-          renderRow={this.item}/>
-        <TextInput
-          style={styles.input}/>
-      </View>
-    )
-  }
+  _handleTextChange(e) {
+    this.state._items = this.state._items.concat({
+      name: 'You', content: e.nativeEvent.text
+    })
+    this.setState({
+      items: this.state.items.cloneWithRows(this.state._items)
+    })
+  },
 
   item(item) {
     return (
@@ -43,8 +39,27 @@ export default class ChatsShow extends Component {
         <Text>{item.content}</Text>
       </View>
     )
-  }
-}
+  },
+
+  render() {
+    return (
+      <View>
+        <Text>Chats: show</Text>
+        <ChatView
+          style={styles.chat}
+          dataSource={this.state.items}
+          renderRow={this.item}
+          initialListSize={this.state.items.length}
+        />
+        <TextInput
+          style={styles.input}
+          returnKeyType='go'
+          onSubmitEditing={this._handleTextChange}
+        />
+      </View>
+    )
+  },
+})
 
 const styles = StyleSheet.create({
   item: {
