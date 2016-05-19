@@ -18,7 +18,7 @@ export default class TentsShow extends Component {
         <View>
           <ChatsIndex/>
         </View>
-        </View>
+      </View>
     )
   }
 }

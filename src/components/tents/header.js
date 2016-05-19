@@ -1,24 +1,18 @@
-/**
- * Test Firebase app
- * @flow
- */
-
 import React, { Component } from 'react'
 import {
+  AppRegistry,
   StyleSheet,
   Text,
   View
 } from 'react-native'
-// import Firebase from 'firebase'
 
-import TentsIndex from './tents/index'
-
-export default class Tent extends Component {
+export default class TentsHeader extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Global</Text>
-        <TentsIndex/>
+        <Text>Tent Name </Text>
+        <Text>Tent Membership </Text>
+        <Text>Tent Status </Text>
       </View>
     )
   }
@@ -26,6 +20,7 @@ export default class Tent extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30
+    flex: 1,
+    flexDirection: 'row'
   }
 })
