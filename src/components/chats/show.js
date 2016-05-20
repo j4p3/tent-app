@@ -57,8 +57,7 @@ export default class ChatsShow extends Component {
       // how to re-match message with its staged twin?
 
       // convert object to array for chat component
-      // @todo - is Object.assign not deep-copying message attrs e.g. image.uri?
-      msgArr.push(Object.assign({ uniqueId: m }, base, messages[m]))
+      msgArr.push(Object.assign({ uniqueId: m }, base, messages[m], { image: { uri: messages[m].image.uri }}))
     }
 
     return msgArr
@@ -78,6 +77,7 @@ export default class ChatsShow extends Component {
     // message = Object.assign({uniqueId: Math.round(Math.random() * 1000)}, message)
 
     message.device = did
+    message.date = new Date()
     this._store.push(message)
 
     // message.uniqueId = 0
@@ -163,7 +163,7 @@ export default class ChatsShow extends Component {
         loadEarlierMessagesButton={!this.state.allLoaded}
         onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
         senderName='JP'
-        senderImage={{url: 'http://0.gravatar.com/avatar/fa4d287d26d7568219b3af5f268eb394'}}
+        senderImage={{ uri: 'http://0.gravatar.com/avatar/fa4d287d26d7568219b3af5f268eb394' }}
         displayNames={true}
         parseText={false}
         isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
