@@ -8,44 +8,63 @@ import {
   View
 } from 'react-native'
 import GiftedMessenger from 'react-native-gifted-messenger'
+import Firebase from 'firebase'
+var DeviceInfo = require('react-native-device-info')
 
 export default class ChatsShow extends Component {
   constructor(props) {
     super(props);
+
+    var _this = this
   
-    this._messages = this.getInitialMessages();
+    this._messages = []
+    this._store = new Firebase('https://inthetent.firebaseio.com/')
+      .child('dev/v1/tents/0/messages')
+    this._store
+      .limitToLast(25)
+      .on('value', function (d) {
+        // why does 'value' fire once per message? page size configurable?
+        // granted it's a socket but seems inefficient.
+        _this.setMessages(_this.processMessages(d.val()))
+    })
 
     this.state = {
-      messages: this._messages, // not a listview datasource!
+      messages: this._messages,
       isLoadingEarlierMessages: false,
       typingMessage: '',
-      allLoaded: false,
+      allLoaded: false
     };
   }
 
-  getInitialMessages() {
-    // @todo GET FB
-    return [
-      {
-        text: 'The Tent lives!',
-        name: 'React-Bot',
-        image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
-        position: 'left',
-        date: new Date(2016, 3, 14, 13, 0),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      },
-      {
-        text: "Drop the 'the', it's already been lampshaded",
-        name: 'Awesome Developer',
-        image: { uri: 'http://0.gravatar.com/avatar/fa4d287d26d7568219b3af5f268eb394' },
-        position: 'right',
-        date: new Date(2016, 3, 14, 13, 1),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      },
-    ];
+  // getInitialMessages() {
+  //   // required?
+  //   return []
+  // }
+
+  processMessages(messages) {
+    var base = {
+      date: new Date()
+    }
+    var msgArr = []
+
+    for (m in messages) {
+      if (messages[m].device == did) {
+        messages[m].position = 'right'
+      } else {
+        messages[m].position = 'left'
+      }
+
+      // how to re-match message with its staged twin?
+
+      // convert object to array for chat component
+      // @todo - is Object.assign not deep-copying message attrs e.g. image.uri?
+      msgArr.push(Object.assign({ uniqueId: m }, base, messages[m]))
+    }
+
+    return msgArr
   }
 
-  setMessages(messages) {
+  setMessages(messages) { 
     this._messages = messages;
     this.setState({ messages: messages });
   }
@@ -53,16 +72,27 @@ export default class ChatsShow extends Component {
   handleSend(message = {}) {
     // @todo POST FB
 
-    // Your logic here
-    // Send message.text to your server
+    // @todo flag outbound message for update on successful push()
 
-    message.uniqueId = Math.round(Math.random() * 10000); // simulating server-side unique id generation
-    this.setMessages(this._messages.concat(message));
+    // assign device here
+    // message = Object.assign({uniqueId: Math.round(Math.random() * 1000)}, message)
 
-    // mark the sent message as Seen
-    // setTimeout(() => {
-    //   this.setMessageStatus(message.uniqueId, 'Seen'); // here you can replace 'Seen' by any string you want
-    // }, 1000);
+    message.device = did
+    this._store.push(message)
+
+    // message.uniqueId = 0
+    // message.pending = true
+    // this.setMessages(this._messages.concat(message))
+
+    // .then(function (d) {
+    //   // problem: getting double updates. new message coming in from server even though I sent it.
+    //   console.log('wat')
+    // })
+    // message.uniqueId = uid;
+
+
+    // message.uniqueId = Math.round(Math.random() * 10000);
+    // this.setMessages(this._messages.concat(message));
 
     // // if you couldn't send the message to your server :
     // // this.setMessageStatus(message.uniqueId, 'ErrorButton');
@@ -142,6 +172,8 @@ export default class ChatsShow extends Component {
     )
   }
 }
+
+const did = DeviceInfo.getUniqueID()
 
 const styles = StyleSheet.create({
   item: {
