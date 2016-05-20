@@ -60,12 +60,12 @@ export default class ChatsShow extends Component {
     this.setMessages(this._messages.concat(message));
 
     // mark the sent message as Seen
-    setTimeout(() => {
-      this.setMessageStatus(message.uniqueId, 'Seen'); // here you can replace 'Seen' by any string you want
-    }, 1000);
+    // setTimeout(() => {
+    //   this.setMessageStatus(message.uniqueId, 'Seen'); // here you can replace 'Seen' by any string you want
+    // }, 1000);
 
-    // if you couldn't send the message to your server :
-    // this.setMessageStatus(message.uniqueId, 'ErrorButton');
+    // // if you couldn't send the message to your server :
+    // // this.setMessageStatus(message.uniqueId, 'ErrorButton');
   }
 
   onLoadEarlierMessages() {
@@ -120,7 +120,12 @@ export default class ChatsShow extends Component {
     return (
       <GiftedMessenger
         ref={(c) => this._GiftedMessenger = c}
-        styles={styles.bubbleRight}
+        styles={{
+          bubbleRight: {
+            marginLeft: 70,
+            backgroundColor: '#116611'
+          }
+        }}
         autoFocus={true}
         messages={this.state.messages}
         handleSend={this.handleSend.bind(this)}
@@ -148,10 +153,6 @@ const styles = StyleSheet.create({
   },
   chat: {
     height: 300
-  },
-  bubbleRight: {
-    marginLeft: 70,
-    backgroundColor: '#116611',
   },
   input: {
     backgroundColor: '#ffffff',
