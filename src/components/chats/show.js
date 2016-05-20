@@ -20,12 +20,11 @@ export default class ChatsShow extends Component {
     this._messages = []
     this._store = new Firebase('https://inthetent.firebaseio.com/')
       .child('dev/v1/tents/0/messages')
+
     this._store
       .limitToLast(25)
       .on('value', function (d) {
-        // why does 'value' fire once per message? page size configurable?
-        // granted it's a socket but seems inefficient.
-        _this.setMessages(_this.processMessages(d.val()))
+        _this.setMessages(_this.handleReceive(d.val()))
     })
 
     this.state = {
@@ -36,12 +35,7 @@ export default class ChatsShow extends Component {
     };
   }
 
-  // getInitialMessages() {
-  //   // required?
-  //   return []
-  // }
-
-  processMessages(messages) {
+  handleReceive(messages = {}) {
     var base = {
       date: new Date()
     }
@@ -54,8 +48,7 @@ export default class ChatsShow extends Component {
         messages[m].position = 'left'
       }
 
-      // how to re-match message with its staged twin?
-
+      // @todo merge message with its pending twin (reduce?)
       // convert object to array for chat component
       msgArr.push(Object.assign({ uniqueId: m }, base, messages[m], { image: { uri: messages[m].image.uri }}))
     }
@@ -69,33 +62,16 @@ export default class ChatsShow extends Component {
   }
 
   handleSend(message = {}) {
-    // @todo POST FB
-
-    // @todo flag outbound message for update on successful push()
-
-    // assign device here
-    // message = Object.assign({uniqueId: Math.round(Math.random() * 1000)}, message)
-
     message.device = did
     message.date = new Date()
     this._store.push(message)
 
+    // @todo flag outbound message for update on successful push()
     // message.uniqueId = 0
     // message.pending = true
     // this.setMessages(this._messages.concat(message))
 
-    // .then(function (d) {
-    //   // problem: getting double updates. new message coming in from server even though I sent it.
-    //   console.log('wat')
-    // })
-    // message.uniqueId = uid;
-
-
-    // message.uniqueId = Math.round(Math.random() * 10000);
-    // this.setMessages(this._messages.concat(message));
-
-    // // if you couldn't send the message to your server :
-    // // this.setMessageStatus(message.uniqueId, 'ErrorButton');
+    // this.setMessageStatus(message.uniqueId, 'ErrorButton');
   }
 
   onLoadEarlierMessages() {
@@ -136,14 +112,6 @@ export default class ChatsShow extends Component {
         allLoaded: true, // hide the `Load earlier messages` button
       });
     }, 1000); // simulating network
-  }
-
-  handleReceive(message = {}) {
-    // @todo point FB listener here
-
-    // REQ PARAMS:
-    // text, name, image, position: 'left', date, uniqueId
-    this.setMessages(this._messages.concat(message));
   }
 
   render() {
@@ -196,43 +164,3 @@ const styles = StyleSheet.create({
     height: 20
   }
 })
-
-const seeds = [
-  { name: 'foo', content: 'bar' },
-  { name: 'hammock next', content: 'level cred' },
-  { name: 'skateboard godard', content: 'thundercats gastropub' },
-  { name: 'four loko', content: 'heirloom pabst' },
-  { name: 'franzen chia', content: 'Authentic bitters' },
-  { name: 'crucifix leggings', content: 'VHS Selvage' },
-  { name: 'biodiesel twee', content: 'salvia dreamcatcher' },
-  { name: 'food truck', content: 'venmo XOXO' },
-  { name: 'Hashtag locavore', content: 'kogi roof' },
-  { name: 'party wayfarers', content: 'fingerstache Disrupt' },
-  { name: 'squid man', content: 'braid fixie' },
-  { name: 'artisan freegan', content: 'tilde hashtag' },
-  { name: 'poutine slow-carb', content: 'single-origin coffee' },
-  { name: 'Lofi chartreuse', content: 'squid affogato' },
-  { name: 'sriracha intelligentsia', content: 'man braid' },
-  { name: 'messenger bag', content: 'four loko' },
-  { name: 'yuccie sartorial', content: 'YOLO hashtag' },
-  { name: 'tryhard Four', content: 'loko slow-carb' },
-  { name: 'ethical chia', content: 'selvage mixtape' },
-  { name: 'umami franzen', content: 'migas tousled' },
-  { name: 'locavore offal', content: 'chicharrones' },
-  { name: 'tryhard venmo', content: 'XOXO' },
-  { name: 'biodiesel twee', content: 'salvia dreamcatcher' },
-  { name: 'food truck', content: 'venmo XOXO' },
-  { name: 'Hashtag locavore', content: 'kogi roof' },
-  { name: 'party wayfarers', content: 'fingerstache Disrupt' },
-  { name: 'squid man', content: 'braid fixie' },
-  { name: 'artisan freegan', content: 'tilde hashtag' },
-  { name: 'poutine slow-carb', content: 'single-origin coffee' },
-  { name: 'skateboard godard', content: 'thundercats gastropub' },
-  { name: 'four loko', content: 'heirloom pabst' },
-  { name: 'franzen chia', content: 'Authentic bitters' },
-  { name: 'crucifix leggings', content: 'VHS Selvage' },
-  { name: 'biodiesel twee', content: 'salvia dreamcatcher' },
-  { name: 'food truck', content: 'venmo XOXO' }
-]
-
-module.exports = ChatsShow
