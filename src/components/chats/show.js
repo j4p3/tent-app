@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {
   Dimensions,
+  Navigator,
   StyleSheet,
   Text,
   TextInput,
@@ -127,7 +128,7 @@ export default class ChatsShow extends Component {
         autoFocus={true}
         messages={this.state.messages}
         handleSend={this.handleSend.bind(this)}
-        maxHeight={400}
+        maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT}
         loadEarlierMessagesButton={!this.state.allLoaded}
         onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
         senderName='JP'
@@ -142,25 +143,4 @@ export default class ChatsShow extends Component {
 }
 
 const did = DeviceInfo.getUniqueID()
-
-const styles = StyleSheet.create({
-  item: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  name: {
-    fontWeight: 'bold'
-  },
-  chat: {
-    height: 300
-  },
-  input: {
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#DDDDDD',
-    borderBottomWidth: 1,
-    marginLeft: 5,
-    marginTop: 3,
-    marginBottom: 5,
-    height: 20
-  }
-})
+const STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight

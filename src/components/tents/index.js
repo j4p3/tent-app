@@ -7,13 +7,12 @@ import {
 } from 'react-native'
 
 import TentsShow from './show'
-import TentsHeader from './header'
 
 export default class TentsIndex extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TentsHeader/>
+        <Text>Tents: index</Text>
         <TentsShow/>
       </View>
     )
