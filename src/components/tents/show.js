@@ -10,7 +10,7 @@ import ChatsIndex from '../chats/index'
 export default class TentsShow extends Component {
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>
           Tents: show
         </Text>

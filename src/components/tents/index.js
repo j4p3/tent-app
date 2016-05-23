@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
-import TentsShow from './show'
 
 export default class TentsIndex extends Component {
   constructor(props) {
