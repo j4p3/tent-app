@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import GiftedMessenger from 'react-native-gifted-messenger'
 import Firebase from 'firebase'
-var DeviceInfo = require('react-native-device-info')
+// var DeviceInfo = require('react-native-device-info')
 
 export default class ChatsShow extends Component {
   constructor(props) {
@@ -142,5 +142,6 @@ export default class ChatsShow extends Component {
   }
 }
 
-const did = DeviceInfo.getUniqueID()
+// const did = DeviceInfo.getUniqueID()
+const did = Math.round(Math.random()*1000)
 const STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight
