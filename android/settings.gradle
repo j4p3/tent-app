@@ -1,0 +1,3 @@
+rootProject.name = 'Tent'
+
+include ':app'

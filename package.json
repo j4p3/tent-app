@@ -7,11 +7,16 @@
   },
   "dependencies": {
     "firebase": "^2.4.2",
-    "react": "^0.14.8",
-    "react-native": "^0.25.1",
+    "react": "^15.0.2",
+    "react-native": "^0.26.0",
+    "react-native-button": "^1.6.0",
     "react-native-device-info": "^0.9.3",
+    "react-native-drawer": "^2.2.2",
     "react-native-gifted-messenger": "^0.1.4",
     "react-native-router-flux": "^3.26.1",
     "reactfire": "^0.7.0"
+  },
+  "devDependencies": {
+    "rnpm-plugin-upgrade": "^0.26.0"
   }
 }
