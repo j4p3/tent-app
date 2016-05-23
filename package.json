@@ -12,6 +12,7 @@
     "react-native-button": "^1.6.0",
     "react-native-device-info": "^0.9.3",
     "react-native-drawer": "^2.2.2",
+    "react-native-extra-dimensions-android": "^0.17.0",
     "react-native-gifted-messenger": "^0.1.4",
     "react-native-router-flux": "^3.26.1",
     "reactfire": "^0.7.0"

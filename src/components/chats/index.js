@@ -13,9 +13,6 @@ export default class ChatsIndex extends Component {
     return (
       <View>
         <Text>Chats: index</Text>
-        <View>
-          <ChatsShow/>
-        </View>
       </View>
     )
   }

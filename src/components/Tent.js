@@ -8,6 +8,7 @@ import {
   Navigator,
   StyleSheet,
   Text,
+  Image,
   View
 } from 'react-native'
 import {Scene, Reducer, Router, Switch, Modal, Schema, Actions} from 'react-native-router-flux'

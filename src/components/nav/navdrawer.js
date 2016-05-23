@@ -8,7 +8,7 @@ const propTypes = {
   navigationState: PropTypes.object,
 };
 
-export default class NavDrawer extends Component {
+class NavDrawer extends Component {
   render(){
     const children = this.props.navigationState.children;
     return (
@@ -23,7 +23,7 @@ export default class NavDrawer extends Component {
         negotiatePan={true}
         tweenDuration={100}
         styles={{
-          drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
+          drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 8},
           main: {paddingLeft: 3},
         }}
         tweenHandler={(ratio) => ({
@@ -36,3 +36,5 @@ export default class NavDrawer extends Component {
 }
 
 NavDrawer.propTypes = propTypes;
+
+export default NavDrawer

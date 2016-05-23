@@ -27,9 +27,9 @@ const TabView = (props, context) => {
   const drawer = context.drawer;
   return (
     <View style={[styles.container, props.sceneStyle ]}>
-      <Button onPress={Actions.tentsindex}>tentsindex</Button>
-      <Button onPress={Actions.tentsshow}>tentsshow</Button>
-      <Button onPress={Actions.chatshow}>chatshow</Button>
+      <Button onPress={Actions.tentsindex}>Tents</Button>
+      <Button onPress={Actions.chatsshow}>Chat</Button>
+      <Button>Settings</Button>
       <Button onPress={Actions.pop}>Back</Button>
     </View>
   );
