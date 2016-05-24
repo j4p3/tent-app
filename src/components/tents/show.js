@@ -11,12 +11,7 @@ export default class TentsShow extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          Tents: show
-        </Text>
-        <View>
-          <ChatsIndex/>
-        </View>
+        <ChatsIndex/>
       </View>
     )
   }

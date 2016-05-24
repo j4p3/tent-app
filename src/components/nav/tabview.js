@@ -27,10 +27,10 @@ const TabView = (props, context) => {
   const drawer = context.drawer;
   return (
     <View style={[styles.container, props.sceneStyle ]}>
-      <Button onPress={Actions.tentsindex}>Tents</Button>
-      <Button onPress={Actions.chatsshow}>Chat</Button>
-      <Button>Settings</Button>
-      <Button onPress={Actions.pop}>Back</Button>
+    <Button onPress={() => { drawer.close(); Actions.tentsindex(); }}>Tents</Button>
+    <Button onPress={() => { drawer.close(); Actions.chatsshow(); }}>Chat</Button>
+    <Button onPress={() => { drawer.close(); Actions.pop(); }}>Back</Button>
+
     </View>
   );
 };

@@ -41,13 +41,12 @@ export default class Tent extends React.Component {
                 title='Tent'>
                 <Scene
                   key='chatsindex'
-                  component={ChatsIndex}
-                  title='Chats'/>
-                <Scene
-                  key='chatsshow'
-                  component={ChatsShow}
-                  title='Chat'/>
+                  component={ChatsIndex}/>
               </Scene>
+              <Scene
+                key='chatsshow'
+                component={ChatsShow}
+                title='Chat'/>
             </Scene>
           </Scene>
         </Scene>
