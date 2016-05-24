@@ -30,7 +30,7 @@ export default class TentsIndex extends Component {
 
   _item(item) {
     return (
-      <TouchableHighlight onPress={Actions.tentsshow}>
+      <TouchableHighlight underlayColor={'#CCC'} onPress={Actions.tentsshow}>
         <View style={styles.item}>
           <Text style={styles.title}>{item.name}</Text>
           <Text>{item.desc}</Text>

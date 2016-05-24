@@ -29,7 +29,7 @@ export default class ChatsIndex extends Component {
 
   _item(item) {
     return (
-      <TouchableHighlight onPress={Actions.chatsshow}>
+      <TouchableHighlight underlayColor={'#CCC'} onPress={Actions.chatsshow}>
         <View style={styles.item}>
           <Text style={styles.title}>{item.title}</Text>
           <Text>{item.author}</Text>
