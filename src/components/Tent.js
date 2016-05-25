@@ -19,11 +19,25 @@ import ChatsIndex from './chats/index'
 import ChatsShow from './chats/show'
 import NavDrawer from './nav/navdrawer'
 import TabIcon from './nav/tabicon'
+import Register from './auth/register'
 
 export default class Tent extends React.Component {
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      store: {}
+    };
+  }
+
   render() {
     return (
       <Router createReducer={reducerCreate}>
+        <Scene
+          key='register'
+          component={Register}
+          initial={true}
+          global={this}/>
         <Scene key='root' hideNavBar={true} hideTabBar={true}>
           <Scene
             key='drawer'
@@ -46,7 +60,8 @@ export default class Tent extends React.Component {
               <Scene
                 key='chatsshow'
                 component={ChatsShow}
-                title='Chat'/>
+                title='Chat'
+                global={this}/>
             </Scene>
           </Scene>
         </Scene>

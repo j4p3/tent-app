@@ -132,8 +132,8 @@ export default class ChatsShow extends Component {
         maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT}
         loadEarlierMessagesButton={!this.state.allLoaded}
         onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
-        senderName='JP'
-        senderImage={{ uri: 'http://0.gravatar.com/avatar/fa4d287d26d7568219b3af5f268eb394' }}
+        senderName={this.props.global.state.store.name}
+        senderImage={{ uri: 'http://thecatapi.com/api/images/get' }}
         displayNames={true}
         parseText={false}
         isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
