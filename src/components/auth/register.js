@@ -30,6 +30,7 @@ export default class Register extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.wrapper}>
         <TextInput
           style={styles.input}
           defaultValue={'Name'}
@@ -38,10 +39,14 @@ export default class Register extends Component {
             this.setState({name: t})
           }}
         />
-        <Button onPress={() => { this._login(); Actions.root(); }}>Go</Button>
-        <Text>
+        <Button
+        containerStyle={{padding:10, marginVertical: 20, height:45, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
+           style={{fontSize: 20 }}
+          onPress={() => { this._login(); Actions.root(); }}>Go</Button>
+        <Text style={styles.text}>
           (No passwords today.)
         </Text>
+        </View>
       </View>
     )
   }
@@ -55,10 +60,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#D6D6D6',
     marginTop: 64
   },
+  wrapper: {
+    marginHorizontal: 20,
+  },
   input: {
+    backgroundColor: '#fff',
     height: 40,
     marginTop: 60,
     borderColor: 'gray',
     borderWidth: 1
   },
+  text: {
+    textAlign: 'center'
+  }
 })
