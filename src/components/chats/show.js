@@ -13,21 +13,15 @@ import GiftedMessenger from 'react-native-gifted-messenger'
 import Firebase from 'firebase'
 var DeviceInfo = require('react-native-device-info')
 
+import GlobalStyles from '../../styles/global'
+
 export default class ChatsShow extends Component {
   constructor(props) {
     super(props);
-
-    var _this = this
   
     this._messages = []
     this._store = new Firebase('https://inthetent.firebaseio.com/')
       .child('dev/v1/tents/0/messages')
-
-    this._store
-      .limitToLast(25)
-      .on('value', function (d) {
-        _this.setMessages(_this.handleReceive(d.val()))
-    })
 
     this.state = {
       messages: this._messages,
@@ -35,6 +29,16 @@ export default class ChatsShow extends Component {
       typingMessage: '',
       allLoaded: false
     };
+  }
+
+  componentDidMount() {
+    var _this = this
+
+    this._store
+      .limitToLast(25)
+      .on('value', function (d) {
+        _this.setMessages(_this.handleReceive(d.val()))
+    })
   }
 
   handleReceive(messages = {}) {
@@ -118,6 +122,11 @@ export default class ChatsShow extends Component {
 
   render() {
     return (
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        marginTop:  64
+      }}>
       <GiftedMessenger
         ref={(c) => this._GiftedMessenger = c}
         styles={{
@@ -139,6 +148,7 @@ export default class ChatsShow extends Component {
         isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
         typingMessage={this.state.typingMessage}
       />
+      </View>
     )
   }
 }

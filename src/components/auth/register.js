@@ -8,6 +8,8 @@ import {
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
+import GlobalStyles from '../../styles/global'
+
 export default class Register extends Component {
   constructor(props) {
     super(props);
@@ -27,12 +29,15 @@ export default class Register extends Component {
     this.props.global.setState({store: {name: this.state.name}})
   }
 
+  componentDidMount() {
+    console.log('wat')
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
+      <View style={GlobalStyles.wrapper}>
         <TextInput
-          style={styles.input}
+          style={[GlobalStyles.input, GlobalStyles.vSpace]}
           defaultValue={'Name'}
           value={this.state.name}
           onChangeText={(t) => {
@@ -40,36 +45,18 @@ export default class Register extends Component {
           }}
         />
         <Button
-        containerStyle={{padding:10, marginVertical: 20, height:45, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
-           style={{fontSize: 20 }}
+          containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace]}
+          style={[GlobalStyles.text, GlobalStyles.buttonInterior]}
           onPress={() => { this._login(); Actions.root(); }}>Go</Button>
-        <Text style={styles.text}>
-          (No passwords today.)
+        <Text style={[styles.text, GlobalStyles.vSpace]}>
+          (No passwords today. Be whoever you want to be.)
         </Text>
-        </View>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#D6D6D6',
-    marginTop: 64
-  },
-  wrapper: {
-    marginHorizontal: 20,
-  },
-  input: {
-    backgroundColor: '#fff',
-    height: 40,
-    marginTop: 60,
-    borderColor: 'gray',
-    borderWidth: 1
-  },
   text: {
     textAlign: 'center'
   }

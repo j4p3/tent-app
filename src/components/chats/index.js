@@ -9,6 +9,9 @@ import {
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
+import GridList from '../util/gridlist'
+import GlobalStyles from '../../styles/global'
+
 export default class ChatsIndex extends Component {
   constructor(props) {
     super(props);
@@ -17,22 +20,18 @@ export default class ChatsIndex extends Component {
     })
 
     this.state = {
-      chats: chats
+      chats: chats.cloneWithRows(seeds)
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      chats: this.state.chats.cloneWithRows(seeds),
-    })
   }
 
   _item(item) {
     return (
-      <TouchableHighlight underlayColor={'#CCC'} onPress={Actions.chatsshow}>
-        <View style={styles.item}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text>{item.author}</Text>
+      <TouchableHighlight
+        style={GlobalStyles.itemContainer}
+        onPress={Actions.chatsshow}>
+        <View style={GlobalStyles.item}>
+          <Text style={GlobalStyles.itemTitle}>{item.title}</Text>
+          <Text style={GlobalStyles.itemBody}>{item.author}</Text>
         </View>
       </TouchableHighlight>
     )
@@ -40,37 +39,13 @@ export default class ChatsIndex extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ListView
-          contentContainerStyle={styles.list}
+      <GridList
           dataSource={this.state.chats}
-          renderRow={this._item}/> 
-      </View>
+          item={this._item}
+          action={Actions.chatsshow}/> 
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#D6D6D6',
-  },
-  list: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  item: {
-    backgroundColor: '#CCC',
-    margin: 10,
-    width: 110,
-    height: 110
-  },
-  title: {
-    fontWeight: 'bold'
-  }
-})
 
 const seeds = [
   {

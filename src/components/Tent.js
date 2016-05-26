@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Text,
   Image,
-  View
+  View,
+  Animations
 } from 'react-native'
 import {Scene, Reducer, Router, Switch, Modal, Schema, Actions} from 'react-native-router-flux'
 
@@ -20,6 +21,7 @@ import ChatsShow from './chats/show'
 import NavDrawer from './nav/navdrawer'
 import TabIcon from './nav/tabicon'
 import Register from './auth/register'
+import GlobalStyles from '../styles/global'
 
 export default class Tent extends React.Component {
   constructor(props) {
@@ -35,26 +37,30 @@ export default class Tent extends React.Component {
       <Router createReducer={reducerCreate}>
         <Scene
           key='register'
+          title='Keep it in the Tent.'
           component={Register}
           initial={true}
           global={this}/>
-        <Scene key='root' hideNavBar={true} hideTabBar={true}>
+        <Scene key='root'
+          hideNavBar={true}
+          hideTabBar={true}>
           <Scene
             key='drawer'
             component={NavDrawer}>
             <Scene key="main" icon={TabIcon}>
               <Scene
                 key='tentsindex'
-                title='Tents'
+                title="Tents I'm In"
                 component={TentsIndex}
                 icon={TabIcon}
                 initial={true}/>
               <Scene
                 key='tentsshow'
-                component={TentsShow}
-                title='Tent'>
+                title='This Tent'
+                component={TentsShow}>
                 <Scene
                   key='chatsindex'
+                  title='Topics in this Tent'
                   component={ChatsIndex}/>
               </Scene>
               <Scene

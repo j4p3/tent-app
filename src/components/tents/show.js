@@ -6,22 +6,14 @@ import {
 } from 'react-native'
 
 import ChatsIndex from '../chats/index'
+import Container from '../../styles/global'
 
 export default class TentsShow extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={Container.wrapper}>
         <ChatsIndex/>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#D6D6D6',
-    marginTop: 64
-  }
-})

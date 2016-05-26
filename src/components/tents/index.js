@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
+import GridList from '../util/gridlist'
+import GlobalStyles from '../../styles/global'
 
 export default class TentsIndex extends Component {
   constructor(props) {
@@ -18,22 +20,18 @@ export default class TentsIndex extends Component {
     })
 
     this.state = {
-      tents: tents
+      tents: tents.cloneWithRows(seeds)
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      tents: this.state.tents.cloneWithRows(seeds),
-    })
   }
 
   _item(item) {
     return (
-      <TouchableHighlight underlayColor={'#CCC'} onPress={Actions.tentsshow}>
-        <View style={styles.item}>
-          <Text style={styles.title}>{item.name}</Text>
-          <Text>{item.desc}</Text>
+      <TouchableHighlight
+        style={GlobalStyles.itemContainer}
+        onPress={this.action}>
+        <View style={GlobalStyles.item}>
+          <Text style={GlobalStyles.itemTitle}>{item.name}</Text>
+          <Text style={GlobalStyles.itemBody}>{item.desc}</Text>
         </View>
       </TouchableHighlight>
     )
@@ -41,38 +39,15 @@ export default class TentsIndex extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ListView
-          contentContainerStyle={styles.list}
+      <View style={GlobalStyles.wrapper}>
+        <GridList
           dataSource={this.state.tents}
-          renderRow={this._item}/> 
+          item={this._item}
+          action={Actions.tentsshow}/>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#D6D6D6',
-    marginTop: 64
-  },
-  list: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  item: {
-    backgroundColor: '#CCC',
-    margin: 10,
-    width: 110,
-    height: 110
-  },
-  title: {
-    fontWeight: 'bold'
-  }
-})
 
 const seeds = [
   {
