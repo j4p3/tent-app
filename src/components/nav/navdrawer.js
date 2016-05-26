@@ -29,7 +29,9 @@ class NavDrawer extends Component {
         tweenHandler={(ratio) => ({
          main: { opacity:Math.max(0.54,1-ratio) }
       })}>
-        <DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} />
+        <DefaultRenderer
+          navigationState={children[0]}
+          onNavigate={this.props.onNavigate}/>
       </Drawer>
     );
   }

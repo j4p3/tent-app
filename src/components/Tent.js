@@ -34,7 +34,8 @@ export default class Tent extends React.Component {
 
   render() {
     return (
-      <Router createReducer={reducerCreate}>
+      <Router createReducer={reducerCreate} 
+        navigationBarStyle={{backgroundColor: 'white'}}>
         <Scene
           key='register'
           title='Keep it in the Tent.'
@@ -47,22 +48,16 @@ export default class Tent extends React.Component {
           <Scene
             key='drawer'
             component={NavDrawer}>
-            <Scene key="main" icon={TabIcon}>
+            <Scene key="main">
               <Scene
                 key='tentsindex'
                 title="Tents I'm In"
                 component={TentsIndex}
-                icon={TabIcon}
                 initial={true}/>
               <Scene
                 key='tentsshow'
-                title='This Tent'
-                component={TentsShow}>
-                <Scene
-                  key='chatsindex'
-                  title='Topics in this Tent'
-                  component={ChatsIndex}/>
-              </Scene>
+                title="Topics in this Tent"
+                component={TentsShow}/>
               <Scene
                 key='chatsshow'
                 component={ChatsShow}
