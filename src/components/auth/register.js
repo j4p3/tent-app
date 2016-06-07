@@ -38,7 +38,7 @@ export default class Register extends Component {
       <View style={GlobalStyles.wrapper}>
         <TextInput
           style={[GlobalStyles.input, GlobalStyles.vSpace]}
-          defaultValue={'Name'}
+          placeholder='Name'
           value={this.state.name}
           onChangeText={(t) => {
             this.setState({name: t})

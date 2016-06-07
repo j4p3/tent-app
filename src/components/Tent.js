@@ -16,11 +16,13 @@ import {Scene, Reducer, Router, Switch, Modal, Schema, Actions} from 'react-nati
 
 import TentsIndex from './tents/index'
 import TentsShow from './tents/show'
-import ChatsIndex from './chats/index'
-import ChatsShow from './chats/show'
+import PostsIndex from './posts/index'
+import PostsShow from './posts/show'
+import PostsNew from './posts/new'
 import NavDrawer from './nav/navdrawer'
 import TabIcon from './nav/tabicon'
 import Register from './auth/register'
+import Test from './test'
 import GlobalStyles from '../styles/global'
 
 export default class Tent extends React.Component {
@@ -42,13 +44,18 @@ export default class Tent extends React.Component {
           component={Register}
           initial={true}
           global={this}/>
-        <Scene key='root'
+        <Scene
+          key='root'
           hideNavBar={true}
           hideTabBar={true}>
           <Scene
             key='drawer'
             component={NavDrawer}>
             <Scene key="main">
+              <Scene 
+                key='postsnew'
+                title='New Post'
+                component={PostsNew}/>
               <Scene
                 key='tentsindex'
                 title="Tents I'm In"
@@ -56,11 +63,11 @@ export default class Tent extends React.Component {
                 initial={true}/>
               <Scene
                 key='tentsshow'
-                title="Topics in this Tent"
+                title="Posts in this Tent"
                 component={TentsShow}/>
               <Scene
-                key='chatsshow'
-                component={ChatsShow}
+                key='postsshow'
+                component={PostsShow}
                 title='Chat'
                 global={this}/>
             </Scene>

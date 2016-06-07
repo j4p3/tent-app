@@ -9,7 +9,7 @@ import {
 
 export default class GridList extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.item = this.props.item || null
     this.action = this.props.action || null
@@ -22,8 +22,9 @@ export default class GridList extends Component {
   render() {
     return (
       <ListView
+        enableEmptySections={true}
         contentContainerStyle={styles.list}
-        dataSource={this.state.dataSource}
+        dataSource={this.props.dataSource}
         renderRow={this.item.bind(this)}/> 
     )
   }
@@ -31,7 +32,7 @@ export default class GridList extends Component {
 
 const styles = StyleSheet.create({
   list: {
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap'
   },

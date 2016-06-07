@@ -36,6 +36,9 @@ var GlobalStyles = StyleSheet.create({
     overflow:'hidden',
     backgroundColor: palette.accent
   },
+  buttonMuted: {
+    backgroundColor: palette.text
+  },
   buttonInterior: {
     color: palette.focus
   },
@@ -55,14 +58,14 @@ var GlobalStyles = StyleSheet.create({
 
   // GRID ITEM
   itemContainer: {
-    margin: 5
+    margin: 10
   },
   item: {
     // LAYOUT
     overflow:'hidden',
     padding: 8,
-    width: 180,
-    height: 180,
+    width: 150,
+    height: 150,
 
     // PRESENTATION
     backgroundColor: palette.focus,
@@ -72,13 +75,13 @@ var GlobalStyles = StyleSheet.create({
     borderWidth: 1
   },
   itemTitle: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
     color: palette.text
   },
   itemBody: {
-    fontSize: 14,
+    fontSize: 12,
     color: palette.text
   }
 })

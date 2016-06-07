@@ -1,6 +1,6 @@
 {
   "name": "Tent",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
@@ -9,6 +9,7 @@
     "firebase": "^2.4.2",
     "react": "^15.0.2",
     "react-native": "^0.26.2",
+    "react-native-action-button": "^1.1.5",
     "react-native-button": "^1.6.0",
     "react-native-device-info": "^0.9.3",
     "react-native-drawer": "^2.2.2",
