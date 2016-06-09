@@ -69,7 +69,7 @@ export default class PostsNew extends Component {
           style={[GlobalStyles.text, GlobalStyles.buttonInterior]}
           onPress={() => {
             this._post();
-            Actions.tentsshow({ tent: this.props.tent });
+            Actions.pop();
           }}
           >Create Post</Button>
       </View>

@@ -31,8 +31,7 @@ export default class TentsIndex extends Component {
 
   componentDidMount() {
     var _this = this
-    this._tents = this._store.tents()
-    this._tents.then(function (s) {
+    this._store.tents().then(function (s) {
       _this.setState({ tents: _this.state.tents.cloneWithRows(s) })
     })
   }

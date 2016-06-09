@@ -9,13 +9,17 @@ import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
 import GlobalStyles from '../../styles/global'
+import Api from '../../stores/api'
 
 export default class Register extends Component {
   constructor(props) {
     super(props);
   
+    this._store = new Api()
     this.state = {
-      name: ''
+      email: 'api_user@unqualified.io',
+      password: 'password',
+      error: ''
     };
   }
 
@@ -24,40 +28,61 @@ export default class Register extends Component {
     this.props.global.setState({store: s})
   }
 
-  _login() {
-    // this._store({name: this.state.name})
-    this.props.global.setState({store: {name: this.state.name}})
+  _signup() {
+    console.log('signup')
   }
 
-  componentDidMount() {
-    console.log('wat')
+  _login() {
+    let _this = this
+
+    this._store.authenticate({
+      email: this.state.email,
+      password: this.state.password
+    }).then(function (r) {
+      if (!r.error) {
+        _this.props.global.setState({
+          store: {
+            email: r.email,
+            id: r.id,
+            avatar: r.avatar
+          }
+        })
+        Actions.root()
+        // @todo make a global response handler object & overwrite the 'ok' condition
+      } else if (r.error) { _this.setState({error: r.error, password: ''})
+      } else { _this.setState({error: 'Server error.', password: ''}) }
+    })
   }
 
   render() {
+    // @todo login/create bottom tab switcher
     return (
       <View style={GlobalStyles.wrapper}>
+        <Text>{this.state.error}</Text>
         <TextInput
           style={[GlobalStyles.input, GlobalStyles.vSpace]}
-          placeholder='Name'
-          value={this.state.name}
+          placeholder='Email'
+          value={this.state.email}
           onChangeText={(t) => {
-            this.setState({name: t})
+            this.setState({email: t})
+          }}
+        />
+        <TextInput
+          style={[GlobalStyles.input, GlobalStyles.vSpace]}
+          placeholder='Password'
+          value={this.state.password}
+          secureTextEntry={true}
+          onChangeText={(t) => {
+            this.setState({password: t})
           }}
         />
         <Button
           containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace]}
           style={[GlobalStyles.text, GlobalStyles.buttonInterior]}
-          onPress={() => { this._login(); Actions.root(); }}>Go</Button>
-        <Text style={[styles.text, GlobalStyles.vSpace]}>
-          (No passwords today. Be whoever you want to be.)
-        </Text>
+          onPress={() => { this._login(); }}>
+          Login/Create</Button>
       </View>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  text: {
-    textAlign: 'center'
-  }
-})

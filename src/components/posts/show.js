@@ -154,7 +154,6 @@ export default class PostsShow extends Component {
               backgroundColor: '#116611'
             }
           }}
-          autoFocus={true}
           messages={this.state.messages}
           handleSend={this.handleSend.bind(this)}
           maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT - 42 - 60}

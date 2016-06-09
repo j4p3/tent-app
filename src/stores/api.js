@@ -20,4 +20,19 @@ export default class Api {
     let uri = '/vote'
     fetch(API_URL + uri + '?vote=' + vote.val)
   }
+
+  authenticate(credentials) {
+    let uri = '/users/login'
+    return fetch(API_URL + uri, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ user: credentials })
+    }).then((response) => {
+      let r = response.json()
+      return r
+    })
+  }
 }
