@@ -29,7 +29,25 @@ export default class Register extends Component {
   }
 
   _signup() {
-    console.log('signup')
+    let _this = this
+
+    this._store.signup({
+      email: this.state.email,
+      password: this.state.password
+    }).then(function (r) {
+      if (!r.error) {
+        _this.props.global.setState({
+          store: {
+            email: r.email,
+            id: r.id,
+            avatar: r.avatar
+          }
+        })
+        Actions.root()
+        // @todo make a global response handler object & overwrite the 'ok' condition
+      } else if (r.error) { _this.setState({error: r.error, password: ''})
+      } else { _this.setState({error: 'Server error.', password: ''}) }
+    })
   }
 
   _login() {
@@ -80,7 +98,12 @@ export default class Register extends Component {
           containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace]}
           style={[GlobalStyles.text, GlobalStyles.buttonInterior]}
           onPress={() => { this._login(); }}>
-          Login/Create</Button>
+          Login</Button>
+        <Button
+          containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace]}
+          style={[GlobalStyles.text, GlobalStyles.buttonInterior]}
+          onPress={() => { this._signup(); }}>
+          Create Account</Button>
       </View>
     )
   }

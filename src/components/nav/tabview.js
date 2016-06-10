@@ -85,9 +85,9 @@ const TabView = (props, context) => {
         containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace, GlobalStyles.buttonMuted]}
         style={[GlobalStyles.text, GlobalStyles.buttonInterior]}
         onPress={() => {
-          Linking.openUrl('mailto:bonnerjp@gmail.com?subject=Tent Demo')
+          Linking.openUrl('mailto:bonnerjp@gmail.com')
           drawer.close(); }}>
-        D) Something way better.</Button>
+        D) Email something else.</Button>
     </View>
   );
 };

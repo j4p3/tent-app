@@ -20,7 +20,7 @@ export default class PostsIndex extends Component {
 
     this._posts = []
     this._store = new Firebase('https://inthetent.firebaseio.com/')
-                        .child('dev/v4/posts')
+                        .child('dev/v6/tents/'+this.tentId+'/posts')
 
     var postData = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1.id !== r2.id,
@@ -35,10 +35,10 @@ export default class PostsIndex extends Component {
     var _this = this
 
     this._store
-      .orderByChild('tent_id')
-      .equalTo(this.tentId)
+      .orderByChild('created_at')
       .limitToLast(25)
       .on('value', function (d) {
+        console.log(d.val())
         _this._setPosts(_this._handleReceive(d.val()))
     })
   }
@@ -51,7 +51,7 @@ export default class PostsIndex extends Component {
       postArr.push(Object.assign({}, posts[p], { id: p }))
     }
 
-    return postArr
+    return postArr.reverse()
   }
 
   _setPosts(posts) { 
@@ -65,6 +65,7 @@ export default class PostsIndex extends Component {
         style={GlobalStyles.itemContainer}
         onPress={() => { Actions.postsshow({ post: item }) }}>
         <View style={GlobalStyles.item}>
+          <Text>{new Date(item.created_at).toDateString()}</Text>
           <Text style={GlobalStyles.itemTitle}>{item.headline}</Text>
           <Text style={GlobalStyles.itemBody}>{item.content}</Text>
         </View>

@@ -16,8 +16,9 @@ export default class PostsNew extends Component {
   constructor(props) {
     super(props);
 
+    this.tentId = this.props.tent.id
     this._store = new Firebase('https://inthetent.firebaseio.com/')
-                        .child('prod/v4/posts')
+                        .child('dev/v6/tents/'+this.tentId+'/posts')
     this.state = {
       headline: '',
       content: '',
@@ -33,7 +34,7 @@ export default class PostsNew extends Component {
       device: did,
       tent_id: this.props.tent.id,
       user_id: 1,
-      created: Firebase.ServerValue.TIMESTAMP
+      created_at: Firebase.ServerValue.TIMESTAMP,
     }
 
     this._store.push(post)

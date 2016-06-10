@@ -25,7 +25,7 @@ export default class PostsShow extends Component {
     this.postId = props.post.id
     this._messages = []
     this._store = new Firebase('https://inthetent.firebaseio.com/')
-                        .child('dev/v4/posts/' + this.postId + '/stream')
+                        .child('dev/v6/tents/' + props.post.tent_id + '/posts/' + this.postId + '/stream')
 
     this.state = {
       messages: this._messages,
@@ -39,7 +39,7 @@ export default class PostsShow extends Component {
     var _this = this
 
     this._store
-      .orderByChild('created')
+      .orderByChild('created_at')
       .limitToLast(25)
       .on('value', function (d) {
         _this._setMessages(_this._handleReceive(d.val()))
@@ -76,7 +76,7 @@ export default class PostsShow extends Component {
     message.device = did
     message.date = new Date()
     message.post_id = this.postId
-    message.created = Firebase.ServerValue.TIMESTAMP
+    message.created_at = Firebase.ServerValue.TIMESTAMP
     this._store.push(message)
 
     // @todo flag outbound message for update on successful push()
@@ -94,6 +94,12 @@ export default class PostsShow extends Component {
   _respond() {
     // @todo create Interaction
     this.setState({responded: true})
+    Actions.flash({message: 'Thanks! The post author will be notified.', nextAction: Actions.back})
+  }
+
+  _close() {
+   this.setState({closed: true})
+   Actions.flash({message: 'Thanks! Voice has been awarded to you and participants.', nextAction: Actions.back})
   }
 
   _footer() {
@@ -112,7 +118,7 @@ export default class PostsShow extends Component {
         <Button
           containerStyle={[GlobalStyles.buttonContainer, styles.auxButton]}
           style={[GlobalStyles.text, GlobalStyles.buttonInterior]} 
-          onPress={Actions.back}>
+          onPress={() => { this._respond() }}>
           I can help!</Button>
       </View>
     )
@@ -125,7 +131,7 @@ export default class PostsShow extends Component {
         <Button
           containerStyle={[GlobalStyles.buttonContainer, styles.auxButton]}
           style={[GlobalStyles.text, GlobalStyles.buttonInterior]} 
-          onPress={Actions.back}>
+          onPress={() => { this._close() }}>
           Thanks & Close</Button>
       </View>
     )

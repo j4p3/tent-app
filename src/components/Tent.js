@@ -22,7 +22,7 @@ import PostsNew from './posts/new'
 import NavDrawer from './nav/navdrawer'
 import TabIcon from './nav/tabicon'
 import Register from './auth/register'
-import Test from './test'
+import Flash from './util/modal'
 import GlobalStyles from '../styles/global'
 
 export default class Tent extends React.Component {
@@ -52,6 +52,10 @@ export default class Tent extends React.Component {
             key='drawer'
             component={NavDrawer}>
             <Scene key="main">
+            <Scene
+                key='flash'
+                title=''
+                component={Flash}/>
               <Scene 
                 key='postsnew'
                 title='New Post'
