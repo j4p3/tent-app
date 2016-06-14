@@ -11,14 +11,16 @@ var DeviceInfo = require('react-native-device-info')
 
 import GlobalStyles from '../../styles/global'
 import Break from '../util/break'
+import Api from '../../stores/api'
 
 export default class PostsNew extends Component {
   constructor(props) {
     super(props);
 
+    let api = new Api()
+
     this.tentId = this.props.tent.id
-    this._store = new Firebase('https://inthetent.firebaseio.com/')
-                        .child('dev/v6/tents/'+this.tentId+'/posts')
+    this._store = api.store().child('tents/'+this.tentId+'/posts')
     this.state = {
       headline: '',
       content: '',

@@ -55,7 +55,8 @@ export default class Tent extends React.Component {
             <Scene
                 key='flash'
                 title=''
-                component={Flash}/>
+                component={Flash}
+                hideTabBar={true}/>
               <Scene 
                 key='postsnew'
                 title='New Post'

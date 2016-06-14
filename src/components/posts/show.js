@@ -17,15 +17,17 @@ var DeviceInfo = require('react-native-device-info')
 import { Actions } from 'react-native-router-flux';
 
 import GlobalStyles from '../../styles/global'
+import Api from '../../stores/api'
 
 export default class PostsShow extends Component {
   constructor(props) {
     super(props);
+
+    let api = new Api()
   
     this.postId = props.post.id
     this._messages = []
-    this._store = new Firebase('https://inthetent.firebaseio.com/')
-                        .child('dev/v6/tents/' + props.post.tent_id + '/posts/' + this.postId + '/stream')
+    this._store = api.store().child('tents/' + props.post.tent_id + '/posts/' + this.postId + '/stream')
 
     this.state = {
       messages: this._messages,

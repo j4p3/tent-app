@@ -11,16 +11,15 @@ import { Actions } from 'react-native-router-flux';
 
 import GridList from '../util/gridlist'
 import GlobalStyles from '../../styles/global'
+import Api from '../../stores/api'
 
 export default class PostsIndex extends Component {
   constructor(props) {
     super(props);
 
     this.tentId = props.tentId
-
     this._posts = []
-    this._store = new Firebase('https://inthetent.firebaseio.com/')
-                        .child('dev/v6/tents/'+this.tentId+'/posts')
+    this._store = new Api()
 
     var postData = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1.id !== r2.id,
@@ -34,16 +33,17 @@ export default class PostsIndex extends Component {
   componentDidMount() {
     var _this = this
 
-    this._store
-      .orderByChild('created_at')
-      .limitToLast(25)
-      .on('value', function (d) {
-        console.log(d.val())
-        _this._setPosts(_this._handleReceive(d.val()))
+    console.log('indexing posts for tent ' + this.tentId)
+    this._store.posts(this.tentId).then(function (s) {
+      console.log('indexed posts')
+      console.log(s)
+      _this.setState({ posts: _this.state.posts.cloneWithRows(s) })
     })
   }
 
   _handleReceive(posts = {}) {
+    // @todo drag-to-refresh
+    // @todo notify on new
     var postArr = []
 
     for (p in posts) {
@@ -65,7 +65,6 @@ export default class PostsIndex extends Component {
         style={GlobalStyles.itemContainer}
         onPress={() => { Actions.postsshow({ post: item }) }}>
         <View style={GlobalStyles.item}>
-          <Text>{new Date(item.created_at).toDateString()}</Text>
           <Text style={GlobalStyles.itemTitle}>{item.headline}</Text>
           <Text style={GlobalStyles.itemBody}>{item.content}</Text>
         </View>
