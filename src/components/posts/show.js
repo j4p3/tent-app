@@ -63,7 +63,7 @@ export default class PostsShow extends Component {
 
       // @todo merge message with its pending twin (reduce?)
       // convert object to array for chat component
-      msgArr.push(Object.assign({ uniqueId: m }, base, messages[m], { image: { uri: messages[m].image.uri }}))
+      msgArr.push(Object.assign({ uniqueId: m }, base, messages[m], { image: { uri: messages[m].user.avatar }}))
     }
 
     return msgArr

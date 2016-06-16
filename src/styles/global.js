@@ -43,7 +43,7 @@ var GlobalStyles = StyleSheet.create({
     color: palette.focus
   },
   text: {
-    fontSize: 20  
+    fontSize: 20,
   },
   input: {
     backgroundColor: palette.focus,

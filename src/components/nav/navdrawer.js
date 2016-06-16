@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from "react"
-import Drawer from "react-native-drawer"
-import { DefaultRenderer } from "react-native-router-flux";
+import React, { Component, PropTypes } from 'react'
+import Drawer from 'react-native-drawer'
+import { DefaultRenderer } from 'react-native-router-flux';
 
-import TabView from "./tabview"
+import TabView from './tabview'
+import Navigation from './navigation'
 
 const propTypes = {
   navigationState: PropTypes.object,
@@ -13,9 +14,9 @@ class NavDrawer extends Component {
     const children = this.props.navigationState.children;
     return (
       <Drawer
-        ref="navigation"
-        type="overlay"
-        content={<TabView/>}
+        ref='navigation'
+        type='overlay'
+        content={<Navigation global={this.props.global}/>}
         tapToClose={true}
         openDrawerOffset={0.2}
         closedDrawerOffset={-3}
@@ -23,11 +24,10 @@ class NavDrawer extends Component {
         negotiatePan={true}
         tweenDuration={100}
         styles={{
-          drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 8},
-          main: {paddingLeft: 3},
+          drawer: { backgroundColor: '#2b303b', shadowColor: '#2b303b', shadowOpacity: 0.8, shadowRadius: 12},
         }}
         tweenHandler={(ratio) => ({
-         main: { opacity:Math.max(0.54,1-ratio) }
+         main: { opacity: Math.max(0.54,1-ratio) }
       })}>
         <DefaultRenderer
           navigationState={children[0]}

@@ -20,23 +20,33 @@ import PostsIndex from './posts/index'
 import PostsShow from './posts/show'
 import PostsNew from './posts/new'
 import NavDrawer from './nav/navdrawer'
-import TabIcon from './nav/tabicon'
 import Register from './auth/register'
 import Flash from './util/modal'
 import GlobalStyles from '../styles/global'
+import Api from '../stores/api'
 
 export default class Tent extends React.Component {
   constructor(props) {
     super(props);
-  
+
+    this._api = new Api()
     this.state = {
-      store: {}
+      store: {},
+      tents: []
     };
+  }
+
+  componentDidMount() {
+    let _this = this
+    this._api.tents().then(function (s) {
+      _this.setState({ tents: s })
+    })
   }
 
   render() {
     return (
-      <Router createReducer={reducerCreate} 
+      <Router createReducer={reducerCreate}
+        drawerImage={require('../assets/ic_menu_black_48dp.png')}
         navigationBarStyle={{backgroundColor: 'white'}}>
         <Scene
           key='register'
@@ -50,7 +60,8 @@ export default class Tent extends React.Component {
           hideTabBar={true}>
           <Scene
             key='drawer'
-            component={NavDrawer}>
+            component={NavDrawer}
+            global={this}>
             <Scene key="main">
             <Scene
                 key='flash'
@@ -69,12 +80,13 @@ export default class Tent extends React.Component {
               <Scene
                 key='tentsshow'
                 title="Posts in this Tent"
-                component={TentsShow}/>
-              <Scene
-                key='postsshow'
-                component={PostsShow}
-                title='Chat'
-                global={this}/>
+                component={TentsShow}>
+                <Scene
+                  key='postsshow'
+                  component={PostsShow}
+                  title='Chat'
+                  global={this}/>
+              </Scene>
             </Scene>
           </Scene>
         </Scene>

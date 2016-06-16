@@ -23,11 +23,6 @@ export default class Register extends Component {
     };
   }
 
-  _store(o) {
-    var s = Object.assign({}, this.props.global.state.store, o)
-    this.props.global.setState({store: s})
-  }
-
   _signup() {
     let _this = this
 
