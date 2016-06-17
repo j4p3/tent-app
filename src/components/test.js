@@ -1,14 +1,15 @@
-import React from 'react';
-import {StyleSheet, Text, View} from "react-native";
+import React, { Component } from 'react'
+import {
+  Text,
+  View
+} from 'react-native'
 
-
-const Wat = (props, context) => {
-  const drawer = context.drawer;
-  return (
-    <View>
-      <Text>wat</Text>
-    </View>
-  );
-};
-
-export default Wat;
+export default class Test extends Component {
+  render() {
+    return (
+      <View>
+        <Text>wat</Text>
+      </View>
+    )
+  }
+}

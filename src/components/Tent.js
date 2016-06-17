@@ -22,6 +22,7 @@ import PostsNew from './posts/new'
 import NavDrawer from './nav/navdrawer'
 import Register from './auth/register'
 import Flash from './util/modal'
+import Test from './test'
 import GlobalStyles from '../styles/global'
 import Api from '../stores/api'
 
@@ -73,10 +74,14 @@ export default class Tent extends React.Component {
                 title='New Post'
                 component={PostsNew}/>
               <Scene
+                key='dash'
+                title="the tent"
+                component={Test}
+                initial={true}/>
+              <Scene
                 key='tentsindex'
                 title="Tents I'm In"
-                component={TentsIndex}
-                initial={true}/>
+                component={TentsIndex}/>
               <Scene
                 key='tentsshow'
                 title="Posts in this Tent"

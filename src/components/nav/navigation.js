@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
+  ScrollView,
   StyleSheet
 } from 'react-native'
 import Button from 'react-native-button'
@@ -25,6 +26,8 @@ export default class Navigation extends Component {
         containerStyle={styles.row}
         style={styles.name}
         onPress={() => {
+          // @todo retrieve context
+          // this.context.drawer.close();
           Actions.tentsshow({ tent: tent })  
         }}>
         { tabs.map((t, i) => (<Text key={i} style={styles.tab}></Text>) )}
@@ -39,14 +42,16 @@ export default class Navigation extends Component {
   }
 
   render() {
+    console.log()
     return (
+      <ScrollView>
       <View style={styles.container}>
         <View style={{backgroundColor: '#212735', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#151B2A'}}>
-          <Text style={[styles.name, { margin: 6 }]}>Tents about {this.props.global.state.tents[0].name}:</Text>
+          <Text style={[styles.name, { margin: 6 }]}>Tents about {this.props.global.state.tents.name}:</Text>
 
         </View>
 
-        {this._nest(this.props.global.state.tents[0])}
+        {this._nest(this.props.global.state.tents)}
 
         <Text style={[styles.name, { fontSize: 12, padding: 20 }]}>
           You're browsing the tent demo.
@@ -76,6 +81,7 @@ export default class Navigation extends Component {
           Let me know what you think!
         </Text>
       </View>
+      </ScrollView>
     )
   }
 }
