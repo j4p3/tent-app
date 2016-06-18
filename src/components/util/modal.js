@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
-import GlobalStyles from '../../styles/global'
+import { GlobalStyles } from '../../styles/global'
 
 export default class Flash extends Component {
   constructor(props) {

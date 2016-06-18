@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { Actions } from 'react-native-router-flux';
 
 import PostsIndex from '../posts/index'
-import Container from '../../styles/global'
+import { GlobalStyles } from '../../styles/global'
 
 export default class TentsShow extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class TentsShow extends Component {
   render() {
     // @todo use a non-push Action
     return (
-      <View style={Container.wrapper}>
+      <View style={GlobalStyles.wrapper}>
         <PostsIndex
           tentId={this.props.tent.id}/>
         <ActionButton buttonColor="rgba(231,76,60,1)">

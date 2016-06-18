@@ -3,6 +3,14 @@
 let API_URL = 'http://localhost:5000';
 
 export default class Api {
+  _fetchData(url) {
+    return fetch(url)
+      .then((response) => {
+        let r = response.json()
+        return r
+      })
+  }
+
   tents() {
     let uri = '/tents'
     return this._fetchData(API_URL + uri)
@@ -17,12 +25,39 @@ export default class Api {
     return this._fetchData(API_URL + uri)
   }
 
-  _fetchData(url) {
-    return fetch(url)
-      .then((response) => {
-        let r = response.json()
-        return r
-      })
+  post(post) {
+    let uri = '/posts'
+    return fetch(API_URL + uri, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ post: post })
+    }).then((response) => {
+      let r = response.json()
+      return r
+    })
+  }
+
+  interact(interaction) {
+    let uri = '/interactions'
+    return fetch(API_URL + uri, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ interaction: interaction })
+    }).then((response) => {
+      let r = response.json()
+      return r
+    })
+  }
+
+  interactions(user) {
+    let uri = '/interactions'
+    return this._fetchData(API_URL + uri + '?user_id=' + user.id)
   }
 
   vote(vote) {

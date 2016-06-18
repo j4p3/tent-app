@@ -22,8 +22,8 @@ import PostsNew from './posts/new'
 import NavDrawer from './nav/navdrawer'
 import Register from './auth/register'
 import Flash from './util/modal'
-import Test from './test'
-import GlobalStyles from '../styles/global'
+import Board from './user/board'
+import { GlobalStyles } from '../styles/global'
 import Api from '../stores/api'
 
 export default class Tent extends React.Component {
@@ -51,7 +51,7 @@ export default class Tent extends React.Component {
         navigationBarStyle={{backgroundColor: 'white'}}>
         <Scene
           key='register'
-          title='Keep it in the Tent.'
+          title='Keep it in the tent.'
           component={Register}
           initial={true}
           global={this}/>
@@ -63,7 +63,8 @@ export default class Tent extends React.Component {
             key='drawer'
             component={NavDrawer}
             global={this}>
-            <Scene key="main">
+            <Scene key="main"
+            initial={true}>
             <Scene
                 key='flash'
                 title=''
@@ -74,9 +75,10 @@ export default class Tent extends React.Component {
                 title='New Post'
                 component={PostsNew}/>
               <Scene
-                key='dash'
-                title="the tent"
-                component={Test}
+                key='board'
+                title="What's happening?"
+                component={Board}
+                global={this}
                 initial={true}/>
               <Scene
                 key='tentsindex'
@@ -84,14 +86,13 @@ export default class Tent extends React.Component {
                 component={TentsIndex}/>
               <Scene
                 key='tentsshow'
-                title="Posts in this Tent"
-                component={TentsShow}>
-                <Scene
-                  key='postsshow'
-                  component={PostsShow}
-                  title='Chat'
-                  global={this}/>
-              </Scene>
+                title="Posts in this tent"
+                component={TentsShow}/>
+              <Scene
+                key='postsshow'
+                component={PostsShow}
+                title='Chat'
+                global={this}/>
             </Scene>
           </Scene>
         </Scene>

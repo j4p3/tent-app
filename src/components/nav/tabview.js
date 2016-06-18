@@ -9,7 +9,7 @@ import {
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
-import GlobalStyles from '../../styles/global'
+import { GlobalStyles } from '../../styles/global'
 import Break from '../util/break'
 import Api from '../../stores/api'
 

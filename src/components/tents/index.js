@@ -10,7 +10,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 
 import GridList from '../util/gridlist'
-import GlobalStyles from '../../styles/global'
+import { GlobalStyles } from '../../styles/global'
 import Api from '../../stores/api'
 
 export default class TentsIndex extends Component {

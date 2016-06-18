@@ -16,18 +16,17 @@ import Button from 'react-native-button';
 var DeviceInfo = require('react-native-device-info')
 import { Actions } from 'react-native-router-flux';
 
-import GlobalStyles from '../../styles/global'
+import { GlobalStyles } from '../../styles/global'
 import Api from '../../stores/api'
 
 export default class PostsShow extends Component {
   constructor(props) {
     super(props);
-
-    let api = new Api()
   
     this.postId = props.post.id
     this._messages = []
-    this._store = api.store().child('tents/' + props.post.tent_id + '/posts/' + this.postId + '/stream')
+    this._api = new Api()
+    this._store = this._api.store().child('tents/' + props.post.tent_id + '/posts/' + this.postId + '/stream')
 
     this.state = {
       messages: this._messages,
@@ -69,7 +68,8 @@ export default class PostsShow extends Component {
     return msgArr
   }
 
-  _setMessages(messages) { 
+  _setMessages(messages) {
+    // @todo are we killing messages on receipt?
     this._messages = messages;
     this.setState({ messages: messages });
   }
@@ -96,6 +96,9 @@ export default class PostsShow extends Component {
   _respond() {
     // @todo create Interaction
     this.setState({responded: true})
+    this._api.interact({
+      user_id: this.props.global.store.id
+    })
     Actions.flash({message: 'Thanks! The post author will be notified.', nextAction: Actions.back})
   }
 

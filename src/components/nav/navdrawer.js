@@ -4,6 +4,7 @@ import { DefaultRenderer } from 'react-native-router-flux';
 
 import TabView from './tabview'
 import Navigation from './navigation'
+import { Palette } from '../../styles/global'
 
 const propTypes = {
   navigationState: PropTypes.object,
@@ -14,17 +15,17 @@ class NavDrawer extends Component {
     const children = this.props.navigationState.children;
     return (
       <Drawer
-        ref='navigation'
+        ref={(ref) => this._drawer = ref}
         type='overlay'
-        content={<Navigation global={this.props.global}/>}
+        content={<Navigation global={this.props.global} context={this}/>}
         tapToClose={true}
         openDrawerOffset={0.2}
         closedDrawerOffset={-3}
         panCloseMask={0.2}
         negotiatePan={true}
-        tweenDuration={100}
+        tweenDuration={20}
         styles={{
-          drawer: { backgroundColor: '#2b303b', shadowColor: '#2b303b', shadowOpacity: 0.8, shadowRadius: 12},
+          drawer: { backgroundColor: Palette.bg, shadowColor: '#2b303b', shadowOpacity: 0.8, shadowRadius: 12},
         }}
         tweenHandler={(ratio) => ({
          main: { opacity: Math.max(0.54,1-ratio) }

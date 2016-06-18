@@ -6,15 +6,15 @@ import {
   StyleSheet
 } from 'react-native'
 import Button from 'react-native-button'
-import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux'
 
-import GlobalStyles from '../../styles/global'
+import { GlobalStyles, Palette } from '../../styles/global'
 import Break from '../util/break'
 
 export default class Navigation extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   _itemize(tent, depth) {
@@ -23,12 +23,11 @@ export default class Navigation extends Component {
     return (
       <Button
         key={tent.id}
-        containerStyle={styles.row}
-        style={styles.name}
+        containerStyle={[styles.row, { backgroundColor: Palette.bg }]}
+        style={[styles.rowButton, GlobalStyles.text, { color: Palette.accent, textAlign: 'left', fontSize: 12 }]}
         onPress={() => {
-          // @todo retrieve context
-          // this.context.drawer.close();
-          Actions.tentsshow({ tent: tent })  
+          this.props.context._drawer.close()
+          Actions.tentsshow({ tent: tent })
         }}>
         { tabs.map((t, i) => (<Text key={i} style={styles.tab}></Text>) )}
         {tent.name}</Button>
@@ -42,42 +41,40 @@ export default class Navigation extends Component {
   }
 
   render() {
-    console.log()
     return (
       <ScrollView>
       <View style={styles.container}>
-        <View style={{backgroundColor: '#212735', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#151B2A'}}>
-          <Text style={[styles.name, { margin: 6 }]}>Tents about {this.props.global.state.tents.name}:</Text>
-
+        <View>
+          <Text style={[GlobalStyles.text, { margin: 6 }]}>
+            You're browsing the tent demo for {this.props.global.state.tents.name}.
+          </Text>
+          <Text style={[GlobalStyles.text, { margin: 6 }]}>Visit a tent:</Text>
         </View>
 
         {this._nest(this.props.global.state.tents)}
 
-        <Text style={[styles.name, { fontSize: 12, padding: 20 }]}>
-          You're browsing the tent demo.
+        <Text style={[GlobalStyles.text, { fontSize: 14, padding: 20 }]}>
+          Thanks for checking out this demo! We're still just a skeleton, but new stuff comes online every week.
         </Text>
-        <Text style={[styles.name, { fontSize: 12, padding: 20 }]}>
-          Thanks for checking it out! This is still just a skeleton, but watch this space. Every week new features come online.
-        </Text>
-        <Text style={[styles.name, { fontSize: 12, padding: 20 }]}>
+        <Text style={[GlobalStyles.text, { fontSize: 14, padding: 20 }]}>
           What should be in next week's build?
         </Text>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <Text style={[styles.name, { fontSize: 12, paddingLeft: 20 }]}>{'\u2022'} </Text>
-          <Text style={[styles.name, { fontSize: 12 }]}>
+          <Text style={[GlobalStyles.text, { fontSize: 14, paddingLeft: 20 }]}>{'\u2022'} </Text>
+          <Text style={[GlobalStyles.text, { fontSize: 14 }]}>
           Social Capital & Rewards</Text>
         </View>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <Text style={[styles.name, { fontSize: 12, paddingLeft: 20 }]}>{'\u2022'} </Text>
-          <Text style={[styles.name, { fontSize: 12 }]}>
+          <Text style={[GlobalStyles.text, { fontSize: 14, paddingLeft: 20 }]}>{'\u2022'} </Text>
+          <Text style={[GlobalStyles.text, { fontSize: 14 }]}>
           Embedded content in chat (emojis and gifs!)</Text>
         </View>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <Text style={[styles.name, { fontSize: 12, paddingLeft: 20 }]}>{'\u2022'} </Text>
-          <Text style={[styles.name, { fontSize: 12, flex: 1 }]}>
+          <Text style={[GlobalStyles.text, { fontSize: 14, paddingLeft: 20 }]}>{'\u2022'} </Text>
+          <Text style={[GlobalStyles.text, { fontSize: 14, flex: 1 }]}>
           More specific interactions ("you should talk to X!")</Text>
         </View>
-        <Text style={[styles.name, { fontSize: 12, padding: 20 }]}>
+        <Text style={[GlobalStyles.text, { fontSize: 14, padding: 20 }]}>
           Let me know what you think!
         </Text>
       </View>
@@ -99,42 +96,16 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   row: {
-    flex: 1,
-    flexDirection: 'row',
     paddingVertical: 6,
     paddingHorizontal: 8,
     paddingLeft: 30,
-    borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    backgroundColor: '#3A414E',
-    borderTopColor: '#474E5D',
-    borderBottomColor: '#212735',
-    borderRightColor: '#212735'
+    borderBottomColor: '#dcdce0',
+    justifyContent: 'flex-start'
+  },
+  rowButton: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
   }
 })
-
-var seeds = [{
-    name: 'Foo',
-    id: 1,
-    children: [{
-        name: 'Bar',
-        id: 2,
-        children: []
-      },
-      {
-        name: 'Baz',
-        id: 3,
-        children: [{
-          name: 'Qux',
-          id: 4,
-          children: []
-        }]
-      },
-      {
-        name: 'Wat',
-        id: 5,
-        children: []
-      }
-    ]
-  }
-]

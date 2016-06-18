@@ -9,7 +9,7 @@ import Button from 'react-native-button'
 import { Actions } from 'react-native-router-flux'
 var DeviceInfo = require('react-native-device-info')
 
-import GlobalStyles from '../../styles/global'
+import { GlobalStyles } from '../../styles/global'
 import Break from '../util/break'
 import Api from '../../stores/api'
 
@@ -17,10 +17,9 @@ export default class PostsNew extends Component {
   constructor(props) {
     super(props);
 
-    let api = new Api()
+    this._store = new Api()
 
     this.tentId = this.props.tent.id
-    this._store = api.store().child('tents/'+this.tentId+'/posts')
     this.state = {
       headline: '',
       content: '',
@@ -35,11 +34,11 @@ export default class PostsNew extends Component {
       content: this.state.content,
       device: did,
       tent_id: this.props.tent.id,
-      user_id: 1,
+      user_id: this.props.global.store.id,
       created_at: Firebase.ServerValue.TIMESTAMP,
     }
 
-    this._store.push(post)
+    this._store.post(post)
   }
 
   render() {

@@ -4,14 +4,14 @@ import {
 } from 'react-native'
 
 const radius = 4
-const palette = {
+export const Palette = {
   bg: '#f4f4f6',
   focus: '#fff',
   accent: '#48a770',
   text:  '#333'
 }
 
-var GlobalStyles = StyleSheet.create({
+export var GlobalStyles = StyleSheet.create({
   containerPadding: {
     paddingVertical: 4,
     paddingHorizontal: 6
@@ -27,29 +27,29 @@ var GlobalStyles = StyleSheet.create({
     paddingHorizontal: 10,
 
     // PRESENTATION
-    backgroundColor: palette.bg,
+    backgroundColor: Palette.bg,
   },
   buttonContainer: {
     borderRadius: radius,
     padding:10,
     height:45,
     overflow:'hidden',
-    backgroundColor: palette.accent
+    backgroundColor: Palette.accent
   },
   buttonMuted: {
-    backgroundColor: palette.text
+    backgroundColor: Palette.text
   },
   buttonInterior: {
-    color: palette.focus
+    color: Palette.focus
   },
   text: {
-    fontSize: 20,
+    fontFamily: 'Open Sans'
   },
   input: {
-    backgroundColor: palette.focus,
+    backgroundColor: Palette.focus,
     height: 40,
     paddingHorizontal: 6,
-    borderColor: palette.accent,
+    borderColor: Palette.accent,
     borderWidth: 1
   },
   vSpace: {
@@ -68,7 +68,7 @@ var GlobalStyles = StyleSheet.create({
     height: 150,
 
     // PRESENTATION
-    backgroundColor: palette.focus,
+    backgroundColor: Palette.focus,
     borderColor: '#ededf0',
     borderBottomColor: '#dcdce0',
     borderRightColor: '#dcdce0',
@@ -78,16 +78,14 @@ var GlobalStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: palette.text
+    color: Palette.text
   },
   itemBody: {
     fontSize: 12,
-    color: palette.text
+    color: Palette.text
   }
 })
 
 var input = null
 
 var colors = null
-
-module.exports = GlobalStyles
