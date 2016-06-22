@@ -10,7 +10,7 @@ import { Actions } from 'react-native-router-flux';
 
 import { GlobalStyles, Palette } from '../../styles/global'
 import Api from '../../stores/api'
-import { TText } from '../util/baseComponents'
+import { TText, Wrapper } from '../util/baseComponents'
 
 export default class Register extends Component {
   constructor(props) {
@@ -71,7 +71,7 @@ export default class Register extends Component {
   render() {
     // @todo login/create bottom tab switcher
     return (
-      <View style={GlobalStyles.wrapper}>
+      <Wrapper>
         <Text>{this.state.error}</Text>
 
         <TextInput
@@ -102,7 +102,7 @@ export default class Register extends Component {
           onPress={() => { this._signup(); }}>
             <TText style={{color: '#fff', fontWeight: 'bold'}}>Create Account</TText>
         </Button>
-      </View>
+      </Wrapper>
     )
   }
 }

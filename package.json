@@ -16,8 +16,7 @@
     "react-native-extra-dimensions-android": "^0.17.0",
     "react-native-gifted-messenger": "^0.1.4",
     "react-native-router-flux": "^3.30.0",
-    "react-native-vector-icons": "^2.0.2",
-    "reactfire": "^0.7.0"
+    "react-native-vector-icons": "^2.0.2"
   },
   "devDependencies": {
     "rnpm-plugin-upgrade": "^0.26.0"
