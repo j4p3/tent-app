@@ -1,6 +1,6 @@
 'use strict';
 
-let API_URL = 'http://localhost:5000';
+let API_URL = 'https://tent.herokuapp.com';
 
 export default class Api {
   _fetchData(url) {
@@ -114,6 +114,6 @@ export default class Api {
   // also @todo set env vars
   store() {
     return new Firebase('https://inthetent.firebaseio.com/')
-      .child('dev/v7')
+      .child('prod/v7')
   }
 }

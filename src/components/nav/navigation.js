@@ -35,6 +35,7 @@ export default class Navigation extends Component {
   }
 
   _nest(tent, tents=[], depth=0) {
+    tent = Object.assign({children : []}, tent)
     tents.push(this._itemize(tent, depth))
     tent.children.map(t => this._nest(t, tents, depth + 1))
     return tents

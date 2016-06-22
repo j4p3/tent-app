@@ -129,7 +129,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-material-kit')
     compile project(':react-native-vector-icons')
     compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-device-info')

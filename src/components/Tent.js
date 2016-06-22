@@ -53,11 +53,12 @@ export default class Tent extends React.Component {
           key='register'
           title='Keep it in the tent.'
           component={Register}
-          initial={true}
+          
           global={this}/>
         <Scene
           key='root'
           hideNavBar={true}
+          initial={true}
           hideTabBar={true}>
           <Scene
             key='drawer'

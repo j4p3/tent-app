@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
-import { MKColor, MKButton, MKTextField } from 'react-native-material-kit'
 
 import { GlobalStyles, Palette } from '../../styles/global'
 import Api from '../../stores/api'
@@ -75,44 +74,34 @@ export default class Register extends Component {
       <View style={GlobalStyles.wrapper}>
         <Text>{this.state.error}</Text>
 
-        <View style={GlobalStyles.vSpace}><MKTextField
-            tintColor={Palette.text}
-            textInputStyle={[GlobalStyles.text, { color: '#000' }]}
-            highlightColor={Palette.accent}
-            underlineSize={2}
-            placeholder='Email'
-            value={this.state.email}
-            onChangeText={(t) => {
-              this.setState({email: t})
-            }}
-          /></View>
-        <View style={GlobalStyles.vSpace}><MKTextField
-          tintColor={Palette.text}
-          textInputStyle={[GlobalStyles.text, { color: '#000' }]}
-          highlightColor={Palette.accent}
-          underlineSize={2}
+        <TextInput
+          style={[GlobalStyles.input, GlobalStyles.vSpace]}
+          placeholder='Email'
+          value={this.state.email}
+          onChangeText={(t) => {
+            this.setState({email: t})
+          }}/>
+        <TextInput
+          style={[GlobalStyles.input, GlobalStyles.vSpace]}
           placeholder='Password'
-          secureTextEntry={true}
           value={this.state.password}
+          secureTextEntry={true}
           onChangeText={(t) => {
             this.setState({password: t})
-          }}
-        /></View>
+          }}/>
 
-        <View style={GlobalStyles.vSpace}><MKButton
-          {...MKButton.coloredButton().toProps()}
-          backgroundColor={Palette.accent}
-          shadowOpacity={0}
+        <Button
+          containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace]}
+          style={GlobalStyles.buttonInterior}
           onPress={() => { this._login(); }}>
-            <TText style={[GlobalStyles.text, {color: '#fff', fontWeight: 'bold'}]}>Login</TText>
-        </MKButton></View>
-        <View style={GlobalStyles.vSpace}><MKButton
-          {...MKButton.coloredButton().toProps()}
-          backgroundColor={Palette.accent}
-          shadowOpacity={0}
+            <TText style={{color: '#fff', fontWeight: 'bold'}}>Login</TText>
+        </Button>
+        <Button
+          containerStyle={[GlobalStyles.buttonContainer, GlobalStyles.vSpace]}
+          style={GlobalStyles.buttonInterior}
           onPress={() => { this._signup(); }}>
-            <TText style={[GlobalStyles.text, {color: '#fff', fontWeight: 'bold'}]}>Create Account</TText>
-        </MKButton></View>
+            <TText style={{color: '#fff', fontWeight: 'bold'}}>Create Account</TText>
+        </Button>
       </View>
     )
   }
