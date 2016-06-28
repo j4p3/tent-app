@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
-  Text,
   View
 } from 'react-native'
 import ActionButton from 'react-native-action-button'
@@ -10,6 +9,7 @@ import { Actions } from 'react-native-router-flux';
 
 import PostsIndex from '../posts/index'
 import { GlobalStyles } from '../../styles/global'
+import { Wrapper } from '../util/baseComponents'
 
 export default class TentsShow extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class TentsShow extends Component {
   render() {
     // @todo use a non-push Action
     return (
-      <View style={GlobalStyles.wrapper}>
+      <Wrapper style={{flex: 1}}>
         <PostsIndex
           tentId={this.props.tent.id}/>
         <ActionButton buttonColor="rgba(231,76,60,1)">
@@ -30,7 +30,7 @@ export default class TentsShow extends Component {
             <Icon name="md-create" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-      </View>
+      </Wrapper>
     )
   }
 }

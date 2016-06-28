@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
+import { Wrapper } from '../util/baseComponents'
 import { GlobalStyles } from '../../styles/global'
 
 export default class Flash extends Component {
@@ -15,14 +16,15 @@ export default class Flash extends Component {
   }
 
   componentDidMount() {
+    // @todo figure out how to prevent double-back
     setTimeout(() => { Actions.pop() }, 2000)
   }
 
   render() {
     return (
-      <View style={GlobalStyles.wrapper}>
-        <Text>{this.props.message}</Text>
-      </View>
+      <Wrapper style={{flex: 1}}>
+        <Text style={GlobalStyles.itemBody}>{this.props.message}</Text>
+      </Wrapper>
     )
   }
 }

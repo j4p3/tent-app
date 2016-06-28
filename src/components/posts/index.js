@@ -33,10 +33,7 @@ export default class PostsIndex extends Component {
   componentDidMount() {
     var _this = this
 
-    console.log('indexing posts for tent ' + this.tentId)
     this._store.posts(this.tentId).then(function (s) {
-      console.log('indexed posts')
-      console.log(s)
       _this.setState({ posts: _this.state.posts.cloneWithRows(s) })
     })
   }

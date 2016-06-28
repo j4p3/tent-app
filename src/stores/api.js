@@ -1,6 +1,6 @@
 'use strict';
 
-let API_URL = 'https://tent.herokuapp.com';
+let API_URL = 'http://localhost:5000';
 
 export default class Api {
   _fetchData(url) {
@@ -11,13 +11,18 @@ export default class Api {
       })
   }
 
+  events(user) {
+    let uri = '/events'
+    uri += '?user_id=' + user.id
+    return this._fetchData(API_URL + uri)
+  }
+
   tents() {
     let uri = '/tents'
     return this._fetchData(API_URL + uri)
   }
 
   posts(tentId) {
-    console.log('api module calling for posts')
     let uri = '/posts'
     if (tentId) {
       uri += '?tent_id=' + tentId
@@ -40,6 +45,21 @@ export default class Api {
     })
   }
 
+  subscribe(subscription) {
+    let uri = '/subscriptions'
+    return fetch(API_URL + uri, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(subscription)
+    }).then((response) => {
+      let r = response.json()
+      return r
+    })
+  }
+
   interact(interaction) {
     let uri = '/interactions'
     return fetch(API_URL + uri, {
@@ -56,6 +76,7 @@ export default class Api {
   }
 
   interactions(user) {
+    console.log(user)
     let uri = '/interactions'
     return this._fetchData(API_URL + uri + '?user_id=' + user.id)
   }
@@ -63,21 +84,6 @@ export default class Api {
   vote(vote) {
     let uri = '/vote'
     fetch(API_URL + uri + '?vote=' + vote.val)
-  }
-
-  interact(interaction) {
-    let uri = '/interactions'
-    return fetch(API_URL + uri, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ interaction: interaction })
-    }).then((response) => {
-      let r = response.json()
-      return r
-    })
   }
 
   signup(credentials) {
@@ -106,6 +112,7 @@ export default class Api {
       body: JSON.stringify({ user: credentials })
     }).then((response) => {
       let r = response.json()
+      console.log(r)
       return r
     })
   }
@@ -114,6 +121,6 @@ export default class Api {
   // also @todo set env vars
   store() {
     return new Firebase('https://inthetent.firebaseio.com/')
-      .child('prod/v7')
+      .child('dev/v7')
   }
 }

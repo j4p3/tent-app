@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import Drawer from 'react-native-drawer'
 import { DefaultRenderer } from 'react-native-router-flux';
 
-import TabView from './tabview'
 import Navigation from './navigation'
 import { Palette } from '../../styles/global'
 

@@ -16,17 +16,17 @@ import Button from 'react-native-button';
 var DeviceInfo = require('react-native-device-info')
 import { Actions } from 'react-native-router-flux';
 
-import { GlobalStyles } from '../../styles/global'
+import { Wrapper } from '../util/baseComponents'
+import { Palette, GlobalStyles } from '../../styles/global'
 import Api from '../../stores/api'
 
 export default class PostsShow extends Component {
   constructor(props) {
     super(props);
   
-    this.postId = props.post.id
     this._messages = []
     this._api = new Api()
-    this._store = this._api.store().child('tents/' + props.post.tent_id + '/posts/' + this.postId + '/stream')
+    this._store = this._api.store().child('tents/' + props.post.tent.id + '/posts/' + props.post.id + '/stream')
 
     this.state = {
       messages: this._messages,
@@ -75,11 +75,17 @@ export default class PostsShow extends Component {
   }
 
   handleSend(message = {}) {
+    // @todo put a user in here
     message.device = did
     message.date = new Date()
-    message.post_id = this.postId
+    message.post_id = this.props.post.id
+    message.user = this.props.global.state.user
     message.created_at = Firebase.ServerValue.TIMESTAMP
     this._store.push(message)
+    this._api.subscribe({
+      user_id: this.props.global.state.user.id,
+      post_id: this.props.post.id
+    })
 
     // @todo flag outbound message for update on successful push()
     // message.uniqueId = 0
@@ -96,15 +102,17 @@ export default class PostsShow extends Component {
   _respond() {
     // @todo create Interaction
     this.setState({responded: true})
+    console.log(this.props.post.id)
     this._api.interact({
-      user_id: this.props.global.store.id
+      origin_user_id: this.props.global.state.user.id,
+      post_id: this.props.post.id
     })
     Actions.flash({message: 'Thanks! The post author will be notified.', nextAction: Actions.back})
   }
 
   _close() {
    this.setState({closed: true})
-   Actions.flash({message: 'Thanks! Voice has been awarded to you and participants.', nextAction: Actions.back})
+   Actions.flash({message: 'Thanks! You and the post participants have earned some voice in this community.', nextAction: Actions.back})
   }
 
   _footer() {
@@ -145,14 +153,19 @@ export default class PostsShow extends Component {
   render() {
     // @todo put headline in nav title, withdraw content on scroll down
     // @todo use native keyboard API for hideaway
+    // @todo throw some actual design into this thing
+    // @todo kill wrapper effect
     return (
-      <View style={styles.wrapper}>
-
+      <Wrapper style={{flex: 1, paddingHorizontal: 0}}>
         <View style={styles.header}>
         <ScrollView>
         <View style={GlobalStyles.containerPadding}>
-          <Text style={styles.headline}>{this.props.post.headline}</Text>
-          <Text>{this.props.post.content}</Text>
+          <Text style={styles.headline}>
+            {this.props.post.headline}
+          </Text>
+          <Text style={GlobalStyles.itemBody}>
+            {this.props.post.content}
+          </Text>
         </View>
         </ScrollView>
         </View>
@@ -162,7 +175,7 @@ export default class PostsShow extends Component {
           styles={{
             bubbleRight: {
               marginLeft: 70,
-              backgroundColor: '#116611'
+              backgroundColor: Palette.accent
             }
           }}
           messages={this.state.messages}
@@ -170,7 +183,7 @@ export default class PostsShow extends Component {
           maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT - 42 - 60}
           loadEarlierMessagesButton={!this.state.allLoaded}
           onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
-          senderName={this.props.global.state.store.name}
+          senderName={this.props.global.state.user.name}
           senderImage={{ uri: 'http://thecatapi.com/api/images/get' }}
           displayNames={true}
           parseText={false}
@@ -181,7 +194,7 @@ export default class PostsShow extends Component {
         <View style={[GlobalStyles.containerPadding, styles.footer]}>
           {this._footer()}
         </View>
-      </View>
+      </Wrapper>
     )
   }
 }

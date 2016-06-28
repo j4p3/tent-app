@@ -85,7 +85,3 @@ export var GlobalStyles = StyleSheet.create({
     color: Palette.text
   }
 })
-
-var input = null
-
-var colors = null

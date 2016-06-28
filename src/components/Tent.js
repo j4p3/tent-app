@@ -73,7 +73,8 @@ export default class Tent extends React.Component {
               <Scene 
                 key='postsnew'
                 title='New Post'
-                component={PostsNew}/>
+                component={PostsNew}
+                global={this}/>
               <Scene
                 key='board'
                 title="What's happening?"

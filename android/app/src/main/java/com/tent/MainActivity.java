@@ -1,6 +1,7 @@
 package com.tent;
 
 import com.facebook.react.ReactActivity;
+import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -38,6 +39,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new ReactMaterialKitPackage(),
             new VectorIconsPackage(),
             new ExtraDimensionsPackage(this),
             new RNDeviceInfo()

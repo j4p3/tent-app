@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
+import { Wrapper } from '../util/baseComponents'
 import GridList from '../util/gridlist'
 import { GlobalStyles } from '../../styles/global'
 import Api from '../../stores/api'
@@ -51,11 +52,11 @@ export default class TentsIndex extends Component {
 
   render() {
     return (
-      <View style={GlobalStyles.wrapper}>
+      <Wrapper style={{flex: 1}}>
         <GridList
           dataSource={this.state.tents}
           item={this._item}/>
-      </View>
+      </Wrapper>
     )
   }
 }
