@@ -1,6 +1,6 @@
 'use strict';
 
-let API_URL = 'http://localhost:5000';
+let API_URL = 'http://10.75.106.78:5000';
 
 export default class Api {
   _fetchData(url) {
