@@ -23,7 +23,7 @@ export default class Flash extends Component {
   render() {
     return (
       <Wrapper style={{flex: 1}}>
-        <Text style={GlobalStyles.itemBody}>{this.props.message}</Text>
+        <Text style={GlobalStyles.bodyText}>{this.props.message}</Text>
       </Wrapper>
     )
   }

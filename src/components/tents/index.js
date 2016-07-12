@@ -43,8 +43,8 @@ export default class TentsIndex extends Component {
         style={GlobalStyles.itemContainer}
         onPress={() => { Actions.tentsshow({ tent: item }) }}>
         <View style={GlobalStyles.item}>
-          <Text style={GlobalStyles.itemTitle}>{item.name}</Text>
-          <Text style={GlobalStyles.itemBody}>{item.desc}</Text>
+          <Text style={GlobalStyles.titleText}>{item.name}</Text>
+          <Text style={GlobalStyles.bodyText}>{item.desc}</Text>
         </View>
       </TouchableHighlight>
     )

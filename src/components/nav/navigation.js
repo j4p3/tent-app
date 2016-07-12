@@ -27,7 +27,7 @@ export default class Navigation extends Component {
         style={[styles.rowButton, GlobalStyles.text, { color: Palette.accent, textAlign: 'left', fontSize: 12 }]}
         onPress={() => {
           this.props.context._drawer.close()
-          Actions.tentsshow({ tent: tent })
+          Actions.tentsshow({ tent: tent, title: tent.name })
         }}>
         { tabs.map((t, i) => (<Text key={i} style={styles.tab}></Text>) )}
         {tent.name}</Button>

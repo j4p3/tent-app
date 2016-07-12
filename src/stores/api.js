@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-let API_URL = 'http://10.75.106.78:5000';
+let API_URL = 'http://localhost:5000'
 
 export default class Api {
   _fetchData(url) {
@@ -76,7 +76,6 @@ export default class Api {
   }
 
   interactions(user) {
-    console.log(user)
     let uri = '/interactions'
     return this._fetchData(API_URL + uri + '?user_id=' + user.id)
   }
@@ -84,6 +83,21 @@ export default class Api {
   vote(vote) {
     let uri = '/vote'
     fetch(API_URL + uri + '?vote=' + vote.val)
+  }
+
+  updateUser(user) {
+    let uri = '/users/' + user.id
+    return fetch(API_URL + uri, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ user: user })
+    }).then((response) => {
+      let r = response.json()
+      return r
+    })
   }
 
   signup(credentials) {
@@ -112,7 +126,6 @@ export default class Api {
       body: JSON.stringify({ user: credentials })
     }).then((response) => {
       let r = response.json()
-      console.log(r)
       return r
     })
   }

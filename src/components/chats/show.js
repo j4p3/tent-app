@@ -101,56 +101,6 @@ export default class PostsShow extends Component {
     // @todo GET FB/<page-1>
   }
 
-  _respond() {
-    // @todo create Interaction
-    this.setState({responded: true})
-    console.log(this.props.post.id)
-    this._api.interact({
-      origin_user_id: this.props.global.state.user.id,
-      post_id: this.props.post.id
-    })
-    Actions.flash({message: 'Thanks! The post author will be notified.', nextAction: Actions.back})
-  }
-
-  _close() {
-   this.setState({closed: true})
-   Actions.flash({message: 'Thanks! You and the post participants have earned some voice in this community.', nextAction: Actions.back})
-  }
-
-  _footer() {
-    // @todo set up auth for user's ID
-    if (this.props.post.device == did) {
-      return this._closer()
-    } else {
-      return this._responder()
-    }
-  }
-
-  _responder() {
-    return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Text style={styles.auxPrompt}>Or just say:</Text>
-        <Button
-          containerStyle={[GlobalStyles.buttonContainer, styles.auxButton]}
-          style={[GlobalStyles.text, GlobalStyles.buttonInterior]} 
-          onPress={() => { this._respond() }}>
-          I can help!</Button>
-      </View>
-    )
-  }
-
-  _closer() {
-    return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Text style={styles.auxPrompt}>All finished?</Text>
-        <Button
-          containerStyle={[GlobalStyles.buttonContainer, styles.auxButton]}
-          style={[GlobalStyles.text, GlobalStyles.buttonInterior]} 
-          onPress={() => { this._close() }}>
-          Thanks & Close</Button>
-      </View>
-    )
-  }
 
   render() {
     // @todo put headline in nav title, withdraw content on scroll down
@@ -163,19 +113,6 @@ export default class PostsShow extends Component {
     // Then where's the damn detail view? Somewhere I need to be able to view this post in all its glory. Maybe posts#show shouldn't just be a chat. Maybe it should be an interaction button, the last few messages, and a blank space for me to type. Typing enters the chat.
     return (
       <Wrapper omitPadding={true}>
-        <View style={styles.header}>
-          <ScrollView>
-            <View style={GlobalStyles.containerPadding}>
-              <Text style={styles.headline}>
-                {this.props.post.headline}
-              </Text>
-              <Text style={GlobalStyles.bodyText}>
-                {this.props.post.content}
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-
         <GiftedMessenger
           ref={(c) => this._GiftedMessenger = c}
           styles={{
@@ -203,28 +140,12 @@ export default class PostsShow extends Component {
           isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
           typingMessage={this.state.typingMessage}
         />
-
-        <View style={[GlobalStyles.containerPadding, styles.footer]}>
-          {this._footer()}
-        </View>
       </Wrapper>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    height: 42,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: '#828287'
-  },
-  footer: {
-    height: 52
-  },
-  headline: {
-    fontWeight: 'bold',
-    overflow: 'hidden'
-  },
   content: {
     overflow: 'hidden'
   },

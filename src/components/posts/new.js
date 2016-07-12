@@ -21,7 +21,6 @@ export default class PostsNew extends Component {
 
     this._store = new Api()
 
-    this.tentId = this.props.tent.id
     this.state = {
       headline: '',
       content: '',
@@ -30,14 +29,12 @@ export default class PostsNew extends Component {
   }
 
   _post () {
-    // @todo keep user state, use actual user
     let post = {
       headline: this.state.headline,
       content: this.state.content,
       device: did,
-      tent_id: this.props.tent.id,
+      tent_id: this.props.tentId,
       user_id: this.props.global.state.user.id,
-      created_at: Firebase.ServerValue.TIMESTAMP,
     }
 
     this._store.post(post)
@@ -46,7 +43,7 @@ export default class PostsNew extends Component {
   render() {
     return (
       <Wrapper>
-        <Text style={GlobalStyles.itemTitle}>
+        <Text style={GlobalStyles.titleText}>
           Post Headline
         </Text>
         <View style={GlobalStyles.vSpace}><MKTextField
@@ -54,14 +51,14 @@ export default class PostsNew extends Component {
           textInputStyle={[GlobalStyles.text, { color: '#000' }]}
           highlightColor={Palette.accent}
           underlineSize={2}
-          placeholder='Headline'
+          placeholder='just the gist.'
           value={this.state.headline}
           onChangeText={(t) => {
             this.setState({ headline: t })
           }}
         /></View>
         
-        <Text style={[GlobalStyles.topSpace, GlobalStyles.itemTitle]}>
+        <Text style={[GlobalStyles.topSpace, GlobalStyles.titleText]}>
           Post Content
         </Text>
         <View style={GlobalStyles.vSpace}><MKTextField
@@ -69,7 +66,7 @@ export default class PostsNew extends Component {
           textInputStyle={[GlobalStyles.text, { color: '#000' }]}
           highlightColor={Palette.accent}
           underlineSize={2}
-          placeholder='Content'
+          placeholder='the full details.'
           value={this.state.content}
           onChangeText={(t) => {
             this.setState({content: t })
@@ -84,7 +81,7 @@ export default class PostsNew extends Component {
             this._post();
             Actions.pop();
           }}>
-            <Text style={GlobalStyles.itemBody} style={[GlobalStyles.text, {color: '#fff', fontWeight: 'bold'}]}>Create Post</Text>
+            <Text style={GlobalStyles.bodyText} style={[GlobalStyles.text, {color: '#fff', fontWeight: 'bold'}]}>Create Post</Text>
         </MKButton></View>
       </Wrapper>
     )

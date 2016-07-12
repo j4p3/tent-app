@@ -3,42 +3,28 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import ActionButton from 'react-native-action-button'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { Actions } from 'react-native-router-flux';
 
 import PostsIndex from '../posts/index'
-import { GlobalStyles } from '../../styles/global'
-import { Wrapper } from '../util/baseComponents'
 
 export default class TentsShow extends Component {
   constructor(props) {
     super(props)
+
+    this.tent = this.props.tent || this.props.global.state.tents
+
+    this.state = {
+      loaded: false
+    }
   }
 
   render() {
-    // @todo use a non-push Action
     return (
-      <Wrapper style={{flex: 1}}>
+      <View style={{flex: 1}}>
         <PostsIndex
-          tentId={this.props.tent.id}/>
-        <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item
-            buttonColor='#9b59b6'
-            title="New Post"
-            onPress={() => { Actions.postsnew({ tent: this.props.tent }) }}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
-      </Wrapper>
+          parent={this}
+          tentId={this.tent.id}/>
+      </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
-  }
-})

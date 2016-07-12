@@ -1,6 +1,6 @@
 {
   "name": "Tent",
-  "version": "0.2.7",
+  "version": "0.3.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
@@ -10,13 +10,16 @@
     "react": "^15.1.0",
     "react-native": "^0.27.2",
     "react-native-action-button": "^1.1.5",
+    "react-native-aws3": "0.0.2",
     "react-native-button": "^1.6.0",
     "react-native-device-info": "^0.9.3",
     "react-native-drawer": "^2.2.2",
     "react-native-extra-dimensions-android": "^0.17.0",
     "react-native-gifted-messenger": "^0.1.4",
+    "react-native-image-picker": "^0.20.1",
     "react-native-material-kit": "^0.3.2",
     "react-native-router-flux": "^3.30.0",
+    "react-native-s3": "0.0.9",
     "react-native-vector-icons": "^2.0.2"
   },
   "devDependencies": {

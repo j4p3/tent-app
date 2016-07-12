@@ -23,6 +23,7 @@ import NavDrawer from './nav/navdrawer'
 import Register from './auth/register'
 import Flash from './util/modal'
 import Board from './user/board'
+import { NotificationMenu, NotificationSwitch } from './user/notifications'
 import { GlobalStyles } from '../styles/global'
 import Api from '../stores/api'
 
@@ -33,15 +34,8 @@ export default class Tent extends React.Component {
     this._api = new Api()
     this.state = {
       store: {},
-      tents: []
+      tents: {}
     };
-  }
-
-  componentDidMount() {
-    let _this = this
-    this._api.tents().then(function (s) {
-      _this.setState({ tents: s })
-    })
   }
 
   render() {
@@ -50,49 +44,47 @@ export default class Tent extends React.Component {
         drawerImage={require('../assets/ic_menu_black_48dp.png')}
         navigationBarStyle={{backgroundColor: 'white'}}>
         <Scene
-          key='register'
-          title='Keep it in the tent.'
-          component={Register}
           initial={true}
+          key='register'
+          title='keep it in the tent.'
+          titleStyle={GlobalStyles.titleText}
+          component={Register}
           global={this}/>
         <Scene
           key='root'
           hideNavBar={true}
           hideTabBar={true}>
           <Scene
+            initial={true}
             key='drawer'
             component={NavDrawer}
             global={this}>
-            <Scene key="main"
-            initial={true}>
+            <Scene key="main">
             <Scene
                 key='flash'
                 title=''
+                titleStyle={GlobalStyles.titleText}
                 component={Flash}
                 hideTabBar={true}/>
               <Scene 
                 key='postsnew'
-                title='New Post'
+                title='say something'
+                titleStyle={GlobalStyles.titleText}
                 component={PostsNew}
                 global={this}/>
               <Scene
-                key='board'
-                title="What's happening?"
-                component={Board}
-                global={this}
-                initial={true}/>
-              <Scene
-                key='tentsindex'
-                title="Tents I'm In"
-                component={TentsIndex}/>
-              <Scene
+                initial={true}
                 key='tentsshow'
-                title="Posts in this tent"
-                component={TentsShow}/>
+                title="posts in this tent"
+                renderRightButton={() => <NotificationMenu />}
+                component={TentsShow}
+                global={this}/>
               <Scene
                 key='postsshow'
                 component={PostsShow}
-                title='Chat'
+                title='chat'
+                titleStyle={GlobalStyles.titleText}
+                renderRightButton={() => <NotificationSwitch />}
                 global={this}/>
             </Scene>
           </Scene>

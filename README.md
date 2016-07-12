@@ -6,6 +6,7 @@ What we're doing here:
 1. Change people's lives: Belonging. Fulfillment. Connection. Value.
 2. Stand for something: Communities. Altruism. Virtue. Citizenship.
 3. Destroy: Spam. Wasted community. Tragedy of commons. Mean people winning.
+4. Create: Conversation. Gifts & giving. Useful, valueable stuff. Victory of the commons: shared benefits.
 
 The anger: online communities suck by nature. Their inherent suckiness shows up in gradual loss of focus, spam, bullying, and a diminishing value over time/growth. The efforts of moderators, CMs, janitors, and rule-bots preserve communities against value-entropy. They persevere organically by fragmenting themselves into sub-communities. But for the people involved, it takes work, and the result is lost value.
 

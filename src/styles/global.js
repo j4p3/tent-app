@@ -5,16 +5,29 @@ import {
 
 const radius = 4
 export const Palette = {
+  text:  '#333',
   bg: '#f4f4f6',
+  neutral: '#dcdce0',
   focus: '#fff',
   accent: '#48a770',
-  text:  '#333'
+  accentDark: '#167740',
+  accentLight: '70C294',
+  offsetADark: '#901B48',
+  offsetALight: '#CB5784',
+  offsetBDark: '#A6681F',
+  offsetBLight: '#EAAC65',
 }
 
 export var GlobalStyles = StyleSheet.create({
   containerPadding: {
     paddingVertical: 4,
     paddingHorizontal: 6
+  },
+
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: '#fff'
   },
 
   wrapper: {
@@ -43,7 +56,7 @@ export var GlobalStyles = StyleSheet.create({
     color: Palette.focus
   },
   text: {
-    fontFamily: 'Open Sans'
+    fontFamily: 'Lato'
   },
   input: {
     backgroundColor: Palette.focus,
@@ -53,7 +66,7 @@ export var GlobalStyles = StyleSheet.create({
     borderWidth: 1
   },
   vSpace: {
-    marginVertical: 6
+    marginVertical: 12
   },
 
   // GRID ITEM
@@ -62,11 +75,12 @@ export var GlobalStyles = StyleSheet.create({
   },
   item: {
     // LAYOUT
-    overflow:'hidden',
+    flex: 1,
     padding: 8,
     width: 150,
     height: 150,
 
+    flexDirection: 'column',
     // PRESENTATION
     backgroundColor: Palette.focus,
     borderColor: '#ededf0',
@@ -75,13 +89,58 @@ export var GlobalStyles = StyleSheet.create({
     borderWidth: 1
   },
   itemTitle: {
+    alignSelf: 'flex-start'
+  },
+  itemContextRow: {
+    flex: 2,
+  },
+  itemContextInterior: {
+    flex: 1,
+    width: 150,
+    flexDirection: 'row',
+    position: 'absolute',
+    overflow: 'hidden',
+  },
+  rightItemContextInterior: {
+    right: -15,
+    alignItems: 'flex-end'
+  },
+  leftItemContextInterior: {
+    left: -15,
+    alignItems: 'flex-end'
+  },
+  itemContextText: {
+    flex: 1,
+    flexDirection: 'column',
+    height: 30,
+    paddingHorizontal: 6,
+  },
+  itemImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+  },
+  itemContent: {
+    flex: 2,
+    overflow: 'hidden'
+  },
+
+  // GLOBAL TEXT
+  titleText: {
+    fontFamily: 'Lato-Black',
     fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    lineHeight: 16,
     color: Palette.text
   },
-  itemBody: {
+  bodyText: {
+    fontFamily: 'Open Sans',
     fontSize: 12,
     color: Palette.text
+  },
+  subText: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    lineHeight: 15,
+    color: Palette.accent
   }
 })

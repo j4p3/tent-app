@@ -4,6 +4,7 @@ import {
   Navigator,
   View,
   Text,
+  Image,
   Keyboard,
   Dimensions,
   Platform
@@ -12,45 +13,43 @@ import {
 import { GlobalStyles, Palette } from '../../styles/global'
 
 function applyStyle(style, classStyle) {
+  console.log('style')
+  console.log(style)
+  console.log('classStyle')
+  console.log(classStyle)
   if (typeof(style) == "object" && style.length) {
-    style = [classStyle].concat(style)
+    style = [style].concat(classStyle)
   } else if (style) {
     style = [classStyle, style];
   } else {
-    style = classStyle;
+    style = classStyle
   }
   return style
 }
 
 export class BodyText extends Text {
-  constructor(props) {
-    super(props);
-    let style = styles.bodyText
-    props.style = applyStyle(props.style, style)   
-  }
-
   render() {
+    let props = Object.assign(this.props,
+      { style: applyStyle(this.props.style, styles.bodyText) })
+    this.props = props
     return super.render()
   }
 }
 
 export class HeaderText extends Text {
-  constructor(props) {
-    super(props);
-    let style = styles.headerText
-    props.style = applyStyle(props.style, style)
-  }
-
   render() {
+    let props = Object.assign(this.props,
+      { style: applyStyle(this.props.style, styles.headerText) })
+    this.props = props
     return super.render()
   }
 }
 
 export class Wrapper extends View {
   constructor(props) {
-    super(props)  
+    super(props)
+    this.parent = props.parent || { state: {loaded: true} }
     this.state = {
-      loaded: props.loaded || true,
       visibleHeight: Dimensions.get('window').height - STATUS_BAR_HEIGHT
     }
   }
@@ -82,23 +81,39 @@ export class Wrapper extends View {
   }
 
   render() {
-    if (this.state.loaded) {
+    if (this.parent.state.loaded) {
       return (
-        <View style={{ height: this.state.visibleHeight, marginTop: STATUS_BAR_HEIGHT }}>
-          <View style={styles.wrapper}>
-            {super.render()}
-          </View>
+        <View style={[
+            { height: this.state.visibleHeight, marginTop: STATUS_BAR_HEIGHT },
+            styles.wrapper,
+            this.props.omitPadding ? { paddingHorizontal: 0 } : null
+          ]}>
+          {super.render()}
         </View>
       )
     } else {
       return (
-        <View><Text>Loading</Text></View>
+        <View style={styles.wrapper}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: 12 }}>
+            <Image
+              style={styles.loadingImage}
+              source={require('../../assets/loading.gif')}/>
+          </View>
+          <Text style={[GlobalStyles.titleText,
+                        { textAlign: 'center', color: Palette.accent }]}>
+            hustling.
+          </Text>
+        </View>
       )
     }
   }
 }
 
 const styles = StyleSheet.create({
+  loadingImage: {
+    width: 75,
+    height: 75
+  },
   bodyText: {
     fontFamily: 'Open Sans',
     fontSize: 12,

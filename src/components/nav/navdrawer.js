@@ -24,7 +24,7 @@ class NavDrawer extends Component {
         negotiatePan={true}
         tweenDuration={20}
         styles={{
-          drawer: { backgroundColor: Palette.bg, shadowColor: '#2b303b', shadowOpacity: 0.8, shadowRadius: 12},
+          drawer: { backgroundColor: Palette.bg, shadowColor: '#2b303b', shadowOpacity: 0.8, shadowRadius: 4},
         }}
         tweenHandler={(ratio) => ({
          main: { opacity: Math.max(0.54,1-ratio) }

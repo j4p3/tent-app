@@ -5,13 +5,17 @@ import {
   View,
   ListView,
   Navigator,
+  Image,
   TouchableHighlight,
 } from 'react-native'
 import { Actions } from 'react-native-router-flux';
+import ActionButton from 'react-native-action-button'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 import GridList from '../util/gridlist'
-import { GlobalStyles } from '../../styles/global'
+import { Palette, GlobalStyles } from '../../styles/global'
 import Api from '../../stores/api'
+import { Wrapper } from '../util/baseComponents'
 
 export default class PostsIndex extends Component {
   constructor(props) {
@@ -32,48 +36,91 @@ export default class PostsIndex extends Component {
 
   componentDidMount() {
     var _this = this
-
     this._store.posts(this.tentId).then(function (s) {
       _this.setState({ posts: _this.state.posts.cloneWithRows(s) })
+      _this.setState({ loaded: true })
     })
   }
 
-  _handleReceive(posts = {}) {
-    // @todo drag-to-refresh
-    // @todo notify on new
-    var postArr = []
-
-    for (p in posts) {
-      // convert object to array for ListView component
-      postArr.push(Object.assign({}, posts[p], { id: p }))
+  _item(item, sectionID, rowID, hlRow) {
+    var itemContext
+    if (rowID % 2 == 0) {
+      itemContext = <View style={[GlobalStyles.vSpace,
+                      GlobalStyles.itemContextRow]}>
+        <View style={[GlobalStyles.itemContextInterior,
+                      GlobalStyles.leftItemContextInterior]}>
+          <Image source={{ uri: item.user.avatar }}
+            style={GlobalStyles.itemImage} />
+          <View style={GlobalStyles.itemContextText}>
+            <Text style={GlobalStyles.subText}>{item.user.name}</Text>
+            <Text style={GlobalStyles.subText}>
+              {item.friendly_created_at} ago</Text>
+          </View>
+        </View></View>
+    } else {
+      itemContext = <View style={[GlobalStyles.vSpace,
+                      GlobalStyles.itemContextRow]}>
+        <View style={[GlobalStyles.itemContextInterior,
+                      GlobalStyles.rightItemContextInterior]}>
+          <View style={GlobalStyles.itemContextText}>
+            <Text style={[GlobalStyles.subText, {textAlign: 'right'}]}>
+            {item.user.name}</Text>
+            <Text style={[GlobalStyles.subText, {textAlign: 'right'}]}>
+              {item.friendly_created_at} ago</Text>
+          </View>
+          <Image source={{ uri: item.user.avatar }}
+            style={GlobalStyles.itemImage} />
+        </View></View>
     }
 
-    return postArr.reverse()
-  }
-
-  _setPosts(posts) { 
-    this._posts = posts
-    this.setState({ posts: this.state.posts.cloneWithRows(posts) });
-  }
-
-  _item(item) {
     return (
       <TouchableHighlight
         style={GlobalStyles.itemContainer}
         onPress={() => { Actions.postsshow({ post: item }) }}>
         <View style={GlobalStyles.item}>
-          <Text style={GlobalStyles.itemTitle}>{item.headline}</Text>
-          <Text style={GlobalStyles.itemBody}>{item.content}</Text>
+
+          <View style={GlobalStyles.itemTitle}>
+            <Text style={GlobalStyles.titleText}
+              numberOfLines={3}>
+              {item.headline}</Text>
+          </View>
+
+          {itemContext}
+
+          <View style={GlobalStyles.itemContent}>
+            <Text style={GlobalStyles.bodyText}
+              numberOfLines={1}>
+              {item.content}</Text>          
+          </View>
+
         </View>
       </TouchableHighlight>
     )
   }
 
   render() {
+    // @todo maybe n-th child the posts so images are always on the outside
     return (
-      <GridList
+      <Wrapper style={{flex: 1}} parent={this}>
+        <GridList
           dataSource={this.state.posts}
-          item={this._item}/> 
+          parent={this}
+          item={this._item}/>
+        <ActionButton buttonColor="rgba(72, 167, 112, 1)">
+          <ActionButton.Item
+            buttonColor={Palette.offsetBLight}
+            title="New Tent"
+            onPress={() => { Actions.postsnew({ tentId: this.tentId }) }}>
+            <Icon name="md-create" style={GlobalStyles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor={Palette.offsetALight}
+            title="New Post"
+            onPress={() => { Actions.postsnew({ tentId: this.tentId }) }}>
+            <Icon name="md-create" style={GlobalStyles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+      </Wrapper> 
     )
   }
 }
