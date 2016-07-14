@@ -46,7 +46,6 @@ export default class Board extends Component {
   }
 
   componentDidMount() {
-    // @todo grab posts and messages, too
     var _this = this
     this._store.events(this.props.global.state.user).then(function (s) {
       s.map(e => e.payload = _this._content[e.type](e))

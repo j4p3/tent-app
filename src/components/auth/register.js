@@ -95,15 +95,16 @@ export default class Register extends Component {
     let _this = this
     this._s3.upload(_this.state.avatarSource, this.state.avatarStorage)
       .then(r => {
-        console.log(r)
         if (!r.error) {
           _this.props.global.setState({
             user: {
+              id: _this.state.userId,
+              name: _this.state.name,
+              email: _this.state.email,
               avatar: r.location
             }
           })
 
-          console.log(_this.props.global.state.user)
           _this._store.updateUser({
             id: _this.state.userId,
             avatar: r.location
@@ -290,6 +291,8 @@ export default class Register extends Component {
         
         <View style={GlobalStyles.vSpace}><MKTextField
             tintColor={Palette.text}
+            keyboardType='email-address'
+            autoCapitalize='none'
             textInputStyle={[GlobalStyles.text, { color: '#000' }]}
             highlightColor={Palette.accent}
             underlineSize={2}

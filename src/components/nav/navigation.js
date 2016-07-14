@@ -24,7 +24,7 @@ export default class Navigation extends Component {
       <Button
         key={tent.id}
         containerStyle={[styles.row, { backgroundColor: Palette.bg }]}
-        style={[styles.rowButton, GlobalStyles.text, { color: Palette.accent, textAlign: 'left', fontSize: 12 }]}
+        style={[styles.rowButton, GlobalStyles.text, { color: Palette.accentDark, textAlign: 'left', fontSize: 12 }]}
         onPress={() => {
           this.props.context._drawer.close()
           Actions.tentsshow({ tent: tent, title: tent.name })

@@ -18,17 +18,18 @@ class NavDrawer extends Component {
         type='overlay'
         content={<Navigation global={this.props.global} context={this}/>}
         tapToClose={true}
-        openDrawerOffset={0.2}
+        openDrawerOffset={75}
         closedDrawerOffset={-3}
         panCloseMask={0.2}
         negotiatePan={true}
         tweenDuration={20}
         styles={{
-          drawer: { backgroundColor: Palette.bg, shadowColor: '#2b303b', shadowOpacity: 0.8, shadowRadius: 4},
+          drawer: { backgroundColor: Palette.bg },
+          mainOverlay: { backgroundColor: Palette.text, opacity: 0.0 }
         }}
         tweenHandler={(ratio) => ({
-         main: { opacity: Math.max(0.54,1-ratio) }
-      })}>
+         mainOverlay: { opacity: Math.min(0.8, ratio) }
+        })}>
         <DefaultRenderer
           navigationState={children[0]}
           onNavigate={this.props.onNavigate}/>

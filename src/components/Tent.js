@@ -76,7 +76,8 @@ export default class Tent extends React.Component {
                 initial={true}
                 key='tentsshow'
                 title="posts in this tent"
-                renderRightButton={() => <NotificationMenu />}
+                renderRightButton={() => <NotificationMenu
+                  user={this.state.user} />}
                 component={TentsShow}
                 global={this}/>
               <Scene
@@ -84,7 +85,8 @@ export default class Tent extends React.Component {
                 component={PostsShow}
                 title='chat'
                 titleStyle={GlobalStyles.titleText}
-                renderRightButton={() => <NotificationSwitch />}
+                renderRightButton={() => <NotificationSwitch
+                  user={this.state.user} />}
                 global={this}/>
             </Scene>
           </Scene>

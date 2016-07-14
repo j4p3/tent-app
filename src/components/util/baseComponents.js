@@ -12,39 +12,6 @@ import {
 
 import { GlobalStyles, Palette } from '../../styles/global'
 
-function applyStyle(style, classStyle) {
-  console.log('style')
-  console.log(style)
-  console.log('classStyle')
-  console.log(classStyle)
-  if (typeof(style) == "object" && style.length) {
-    style = [style].concat(classStyle)
-  } else if (style) {
-    style = [classStyle, style];
-  } else {
-    style = classStyle
-  }
-  return style
-}
-
-export class BodyText extends Text {
-  render() {
-    let props = Object.assign(this.props,
-      { style: applyStyle(this.props.style, styles.bodyText) })
-    this.props = props
-    return super.render()
-  }
-}
-
-export class HeaderText extends Text {
-  render() {
-    let props = Object.assign(this.props,
-      { style: applyStyle(this.props.style, styles.headerText) })
-    this.props = props
-    return super.render()
-  }
-}
-
 export class Wrapper extends View {
   constructor(props) {
     super(props)

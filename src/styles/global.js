@@ -12,10 +12,10 @@ export const Palette = {
   accent: '#48a770',
   accentDark: '#167740',
   accentLight: '70C294',
-  offsetADark: '#901B48',
-  offsetALight: '#CB5784',
-  offsetBDark: '#A6681F',
-  offsetBLight: '#EAAC65',
+  offsetADark: '#6C146C',
+  offsetALight: '#984298',
+  offsetBDark: '#A65C1F',
+  offsetBLight: '#C97D3E',
 }
 
 export var GlobalStyles = StyleSheet.create({
