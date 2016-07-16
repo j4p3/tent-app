@@ -53,14 +53,15 @@ export class Wrapper extends View {
         <View style={[
             { height: this.state.visibleHeight, marginTop: STATUS_BAR_HEIGHT },
             styles.wrapper,
-            this.props.omitPadding ? { paddingHorizontal: 0 } : null
+            this.props.omitPadding ? { paddingHorizontal: 0 } : null,
+            this.props.center ? { justifyContent: 'center' } : null
           ]}>
           {super.render()}
         </View>
       )
     } else {
       return (
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, { justifyContent: 'center' }]}>
           <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: 12 }}>
             <Image
               style={styles.loadingImage}
@@ -96,7 +97,6 @@ const styles = StyleSheet.create({
     // LAYOUT
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
     paddingHorizontal: 10,
 
     // PRESENTATION

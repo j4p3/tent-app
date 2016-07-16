@@ -6,7 +6,8 @@ import {
 const radius = 4
 export const Palette = {
   text:  '#333',
-  bg: '#f4f4f6',
+  bg: '#ededed',
+  bgLight: '#f9f9f9',
   neutral: '#dcdce0',
   focus: '#fff',
   accent: '#48a770',
@@ -20,8 +21,8 @@ export const Palette = {
 
 export var GlobalStyles = StyleSheet.create({
   containerPadding: {
-    paddingVertical: 4,
-    paddingHorizontal: 6
+    paddingVertical: 6,
+    paddingHorizontal: 8
   },
 
   actionButtonIcon: {
@@ -73,20 +74,19 @@ export var GlobalStyles = StyleSheet.create({
   itemContainer: {
     margin: 10
   },
-  item: {
-    // LAYOUT
+  itemLayout: {
     flex: 1,
-    padding: 8,
     width: 150,
     height: 150,
-
+  },
+  itemPresentation: {
     flexDirection: 'column',
-    // PRESENTATION
     backgroundColor: Palette.focus,
     borderColor: '#ededf0',
     borderBottomColor: '#dcdce0',
     borderRightColor: '#dcdce0',
-    borderWidth: 1
+    borderWidth: 1,
+    padding: 8
   },
   itemTitle: {
     alignSelf: 'flex-start'
@@ -107,7 +107,7 @@ export var GlobalStyles = StyleSheet.create({
   },
   leftItemContextInterior: {
     left: -15,
-    alignItems: 'flex-end'
+    alignItems: 'flex-start'
   },
   itemContextText: {
     flex: 1,

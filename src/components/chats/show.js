@@ -5,8 +5,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  ListView,
-  ScrollView,
   View,
   Platform,
 } from 'react-native'
@@ -20,7 +18,7 @@ import { Wrapper } from '../util/baseComponents'
 import { Palette, GlobalStyles } from '../../styles/global'
 import Api from '../../stores/api'
 
-export default class PostsShow extends Component {
+export default class ChatsShow extends Component {
   constructor(props) {
     super(props);
   
@@ -56,7 +54,7 @@ export default class PostsShow extends Component {
     var msgArr = []
 
     for (m in messages) {
-      if (messages[m].device == did) {
+      if (messages[m].user.id == this.props.global.state.user.id) {
         messages[m].position = 'right'
       } else {
         messages[m].position = 'left'
@@ -77,17 +75,18 @@ export default class PostsShow extends Component {
   }
 
   handleSend(message = {}) {
-    // @todo put a user in here
-    message.device = did
-    message.date = new Date()
-    message.post_id = this.props.post.id
-    message.user = this.props.global.state.user
-    message.created_at = Firebase.ServerValue.TIMESTAMP
-    this._store.push(message)
-    this._api.subscribe({
-      user_id: this.props.global.state.user.id,
-      post_id: this.props.post.id
-    })
+    if (message.text && message.text.length > 0) {    
+      message.device = did
+      message.date = new Date()
+      message.post_id = this.props.post.id
+      message.user = this.props.global.state.user
+      message.created_at = Firebase.ServerValue.TIMESTAMP
+      this._store.push(message)
+      this._api.subscribe({
+        user_id: this.props.global.state.user.id,
+        post_id: this.props.post.id
+      })
+    }
 
     // @todo flag outbound message for update on successful push()
     // message.uniqueId = 0
@@ -103,14 +102,8 @@ export default class PostsShow extends Component {
 
 
   render() {
-    // @todo put headline in nav title, withdraw content on scroll down
-    // @todo use native keyboard API for hideaway
-    // @todo throw some actual design into this thing
-    // @todo send arrow
-    // @todo unfuck message flex alignment padding issue
-
-    // just drop a big fat gridlist item into a bg-colored no-man's-land. Shrink to height=0 on scroll.
-    // Then where's the damn detail view? Somewhere I need to be able to view this post in all its glory. Maybe posts#show shouldn't just be a chat. Maybe it should be an interaction button, the last few messages, and a blank space for me to type. Typing enters the chat.
+    // @todo weird chat margins
+    // @todo proper full-height utility
     return (
       <Wrapper omitPadding={true}>
         <GiftedMessenger
@@ -130,11 +123,11 @@ export default class PostsShow extends Component {
           }}
           messages={this.state.messages}
           handleSend={this.handleSend.bind(this)}
-          maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT - 42 - 60}
+          maxHeight={Dimensions.get('window').height - STATUS_BAR_HEIGHT - 64 - 36}
           loadEarlierMessagesButton={!this.state.allLoaded}
           onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
           senderName={this.props.global.state.user.name}
-          senderImage={{ uri: 'http://thecatapi.com/api/images/get' }}
+          senderImage={{ uri: this.props.global.state.user.avatar }}
           displayNames={true}
           parseText={false}
           isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
@@ -145,18 +138,6 @@ export default class PostsShow extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  content: {
-    overflow: 'hidden'
-  },
-  auxButton: {
-    width: 180
-  },
-  auxPrompt: {
-    marginTop: 16,
-    marginRight: 6
-  }
-})
 const did = DeviceInfo.getUniqueID()
 const STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight
 if (Platform.OS === 'android') {

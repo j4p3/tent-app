@@ -9,7 +9,6 @@ import Button from 'react-native-button'
 import { Actions } from 'react-native-router-flux'
 
 import { GlobalStyles, Palette } from '../../styles/global'
-import Break from '../util/break'
 
 export default class Navigation extends Component {
   constructor(props) {

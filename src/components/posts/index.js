@@ -76,8 +76,8 @@ export default class PostsIndex extends Component {
     return (
       <TouchableHighlight
         style={GlobalStyles.itemContainer}
-        onPress={() => { Actions.postsshow({ post: item }) }}>
-        <View style={GlobalStyles.item}>
+        onPress={() => { Actions.postsshow({ post: item, title: item.user.name + '\'s post' }) }}>
+        <View style={[GlobalStyles.itemLayout, GlobalStyles.itemPresentation]}>
 
           <View style={GlobalStyles.itemTitle}>
             <Text style={GlobalStyles.titleText}
@@ -99,7 +99,6 @@ export default class PostsIndex extends Component {
   }
 
   render() {
-    // @todo maybe n-th child the posts so images are always on the outside
     return (
       <Wrapper style={{flex: 1}} parent={this}>
         <GridList

@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  ListView,
+  Image,
   ScrollView,
   View,
   Platform,
@@ -15,6 +15,7 @@ import Firebase from 'firebase'
 import Button from 'react-native-button';
 var DeviceInfo = require('react-native-device-info')
 import { Actions } from 'react-native-router-flux';
+import { MKButton } from 'react-native-material-kit'
 
 import { Wrapper } from '../util/baseComponents'
 import { Palette, GlobalStyles } from '../../styles/global'
@@ -27,8 +28,6 @@ export default class PostsShow extends Component {
     this._messages = []
     this._api = new Api()
     this._store = this._api.store().child('tents/' + props.post.tent_id + '/posts/' + props.post.id + '/stream')
-
-    console.log('initializing post show for tent ' + props.post.tent_id)
 
     this.state = {
       messages: this._messages,
@@ -43,11 +42,15 @@ export default class PostsShow extends Component {
 
     this._store
       .orderByChild('created_at')
-      .limitToLast(25)
+      .limitToLast(3)
       .on('value', function (d) {
         _this._setMessages(_this._handleReceive(d.val()))
     })
   }
+
+  /***************************************************************************/
+  // State manipulation utilities
+  /***************************************************************************/
 
   _handleReceive(messages = {}) {
     var base = {
@@ -56,7 +59,7 @@ export default class PostsShow extends Component {
     var msgArr = []
 
     for (m in messages) {
-      if (messages[m].device == did) {
+      if (messages[m].user.id == this.props.global.state.user.id) {
         messages[m].position = 'right'
       } else {
         messages[m].position = 'left'
@@ -76,18 +79,20 @@ export default class PostsShow extends Component {
     this.setState({ messages: messages });
   }
 
-  handleSend(message = {}) {
-    // @todo put a user in here
-    message.device = did
-    message.date = new Date()
-    message.post_id = this.props.post.id
-    message.user = this.props.global.state.user
-    message.created_at = Firebase.ServerValue.TIMESTAMP
-    this._store.push(message)
-    this._api.subscribe({
-      user_id: this.props.global.state.user.id,
-      post_id: this.props.post.id
-    })
+  _handleSend(message = {}) {
+    if (message.text && message.text.length > 0) {
+      message.device = did
+      message.date = new Date()
+      message.post_id = this.props.post.id
+      message.user = this.props.global.state.user
+      message.created_at = Firebase.ServerValue.TIMESTAMP
+      this._store.push(message)
+      this._api.subscribe({
+        user_id: this.props.global.state.user.id,
+        post_id: this.props.post.id
+      })
+    }
+    Actions.chatsshow({ post: this.props.post })
 
     // @todo flag outbound message for update on successful push()
     // message.uniqueId = 0
@@ -101,10 +106,12 @@ export default class PostsShow extends Component {
     // @todo GET FB/<page-1>
   }
 
+  /***************************************************************************/
+  // Server actions
+  /***************************************************************************/
+
   _respond() {
-    // @todo create Interaction
     this.setState({responded: true})
-    console.log(this.props.post.id)
     this._api.interact({
       origin_user_id: this.props.global.state.user.id,
       post_id: this.props.post.id
@@ -117,123 +124,184 @@ export default class PostsShow extends Component {
    Actions.flash({message: 'Thanks! You and the post participants have earned some voice in this community.', nextAction: Actions.back})
   }
 
-  _footer() {
-    // @todo set up auth for user's ID
-    if (this.props.post.device == did) {
-      return this._closer()
+  _interactor(item) {
+    if (item.user.id == this.props.global.state.user.id) {
+      return this._closer(item)
     } else {
-      return this._responder()
+      return this._responder(item)
     }
   }
 
-  _responder() {
+  /***************************************************************************/
+  // Templates & rendering
+  /***************************************************************************/
+
+  _responder(item) {
     return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Text style={styles.auxPrompt}>Or just say:</Text>
-        <Button
-          containerStyle={[GlobalStyles.buttonContainer, styles.auxButton]}
-          style={[GlobalStyles.text, GlobalStyles.buttonInterior]} 
-          onPress={() => { this._respond() }}>
-          I can help!</Button>
-      </View>
+      <View style={{ flex: 1, marginHorizontal: 10 }}><MKButton
+        {...MKButton.coloredButton().toProps()}
+        backgroundColor={Palette.accent}
+        shadowOpacity={0}
+        onPress={() => { this._respond() }}>
+          <Text style={[GlobalStyles.titleText, { color: Palette.focus, textAlign: 'center' }]}>
+          tell {item.user.name} to hit me up
+          </Text></MKButton></View>
     )
   }
 
-  _closer() {
+  _closer(item) {
     return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Text style={styles.auxPrompt}>All finished?</Text>
-        <Button
-          containerStyle={[GlobalStyles.buttonContainer, styles.auxButton]}
-          style={[GlobalStyles.text, GlobalStyles.buttonInterior]} 
-          onPress={() => { this._close() }}>
-          Thanks & Close</Button>
-      </View>
+      <View style={{ flex: 1, marginHorizontal: 10 }}><MKButton
+        {...MKButton.coloredButton().toProps()}
+        backgroundColor={Palette.accent}
+        shadowOpacity={0}
+        onPress={() => { this._close() }}>
+          <Text style={[GlobalStyles.titleText, { color: Palette.focus, textAlign: 'center' }]}>
+          say thanks & close
+          </Text></MKButton></View>
+    )
+  }
+
+  _item(item) {
+    return (
+        <View style={[GlobalStyles.itemPresentation, styles.item]}>
+          <View style={{flex: 1 }}>
+            <Text style={GlobalStyles.titleText}>
+              {item.headline}</Text>
+          </View>
+
+          <View style={{ flex: 1, marginVertical: 12, height: 30  }}>
+            <View style={[GlobalStyles.itemContextInterior,
+                          GlobalStyles.leftItemContextInterior]}>
+              <Image source={{ uri: item.user.avatar || null }}
+                style={GlobalStyles.itemImage} />
+              <View style={GlobalStyles.itemContextText}>
+                <Text style={GlobalStyles.subText}>{item.user.name}</Text>
+                <Text style={GlobalStyles.subText}>
+                  {item.friendly_created_at} ago</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={{flex: 1 }}>
+            <Text style={GlobalStyles.bodyText}>
+              {item.content}</Text>          
+          </View>
+
+        </View>
+    )
+  }
+
+  dont_render() {
+    return (
+      <Wrapper>
+        <ScrollView style={{height: Dimensions.get('window').height - STATUS_BAR_HEIGHT - 64}}>
+          <View style={{height: 500}}><Text>wat</Text></View>
+          <View style={{height: 500}}><Text>wat</Text></View>
+          <View style={{height: 500}}><Text>wat</Text></View>
+        </ScrollView>
+      </Wrapper>
     )
   }
 
   render() {
-    // @todo put headline in nav title, withdraw content on scroll down
     // @todo use native keyboard API for hideaway
-    // @todo throw some actual design into this thing
-    // @todo send arrow
+    // @todo send arrow https://github.com/FaridSafi/react-native-gifted-messenger/pull/127
+    // @todo multiline input https://github.com/FaridSafi/react-native-gifted-messenger/issues/117
     // @todo unfuck message flex alignment padding issue
 
-    // just drop a big fat gridlist item into a bg-colored no-man's-land. Shrink to height=0 on scroll.
-    // Then where's the damn detail view? Somewhere I need to be able to view this post in all its glory. Maybe posts#show shouldn't just be a chat. Maybe it should be an interaction button, the last few messages, and a blank space for me to type. Typing enters the chat.
     return (
-      <Wrapper omitPadding={true}>
-        <View style={styles.header}>
-          <ScrollView>
-            <View style={GlobalStyles.containerPadding}>
-              <Text style={styles.headline}>
-                {this.props.post.headline}
-              </Text>
-              <Text style={GlobalStyles.bodyText}>
-                {this.props.post.content}
-              </Text>
+      <Wrapper>
+        <ScrollView style={[
+          styles.itemContainer,
+          { height: Dimensions.get('window').height - STATUS_BAR_HEIGHT - 64
+        }]}>
+
+          {this._item(this.props.post)}
+
+          <View style={styles.itemFooter}>
+
+            <View style={styles.itemInteractions}>
+              {this._interactor(this.props.post)}
+
+              <View style={{ flex: 1, marginHorizontal: 10 }}><MKButton
+                {...MKButton.coloredButton().toProps()}
+                backgroundColor={Palette.accent}
+                shadowOpacity={0}
+                onPress={() => {
+                  Actions.chatsshow({ post: this.props.post }) }}>
+                  <Text style={[GlobalStyles.titleText, { color: Palette.focus, textAlign: 'center' }]}>
+                  chat
+                  </Text></MKButton></View>
             </View>
-          </ScrollView>
-        </View>
 
-        <GiftedMessenger
-          ref={(c) => this._GiftedMessenger = c}
-          styles={{
-            bubbleRight: {
-              marginLeft: 20,
-              backgroundColor: Palette.accent
-            },
-            bubbleLeft: {
-              backgroundColor: Palette.focus
-            },
-            container: {
-              flex: 1,
-              backgroundColor: Palette.bg
-            }
-          }}
-          messages={this.state.messages}
-          handleSend={this.handleSend.bind(this)}
-          maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT - 42 - 60}
-          loadEarlierMessagesButton={!this.state.allLoaded}
-          onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
-          senderName={this.props.global.state.user.name}
-          senderImage={{ uri: 'http://thecatapi.com/api/images/get' }}
-          displayNames={true}
-          parseText={false}
-          isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
-          typingMessage={this.state.typingMessage}
-        />
+            <GiftedMessenger
+              ref={(c) => this._GiftedMessenger = c}
+              styles={{
+                bubbleRight: {
+                  backgroundColor: Palette.accent
+                },
+                bubbleLeft: {
+                  backgroundColor: Palette.focus
+                },
+                container: {
+                  backgroundColor: Palette.bgLight,
+                },
+                date: {
+                  height: 0
+                },
+                sendButton: {
+                  marginTop: 11,
+                  marginLeft: 10,
+                  color: Palette.accent
+                },
+                loadEarlierMessagesButton: {
+                  fontSize: 14,
+                  color: Palette.accent
+                },
+              }}
 
-        <View style={[GlobalStyles.containerPadding, styles.footer]}>
-          {this._footer()}
-        </View>
+              alwaysBounceVertical={false}
+              messages={this.state.messages}
+              handleSend={this._handleSend.bind(this)}
+              maxHeight={225}
+              onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
+              senderName={this.props.global.state.user.name}
+              senderImage={{ uri: this.props.global.state.user.avatar }}
+              loadEarlierMessagesButton={!this.state.messages.length}
+              loadEarlierMessagesButtonText={'No messages yet.'}
+              displayNames={true}
+              parseText={false}
+              isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
+              typingMessage={this.state.typingMessage}
+            />
+
+          </View>
+        </ScrollView>
       </Wrapper>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    height: 42,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: '#828287'
+  itemContainer: {
+    overflow: 'visible'
   },
-  footer: {
-    height: 52
+  item: {
+    flex: 1,
+    paddingVertical: 12,
+    marginTop: 12
   },
-  headline: {
-    fontWeight: 'bold',
-    overflow: 'hidden'
+  itemFooter: {
+    backgroundColor: Palette.bgLight,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: '#dcdce0'
   },
-  content: {
-    overflow: 'hidden'
-  },
-  auxButton: {
-    width: 180
-  },
-  auxPrompt: {
-    marginTop: 16,
-    marginRight: 6
+  itemInteractions: {
+    marginTop: 4,
+    padding: 8,
+    flexDirection: 'row'
   }
 })
 const did = DeviceInfo.getUniqueID()

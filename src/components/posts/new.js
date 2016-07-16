@@ -12,7 +12,6 @@ var DeviceInfo = require('react-native-device-info')
 
 import { Wrapper } from '../util/baseComponents'
 import { GlobalStyles, Palette } from '../../styles/global'
-import Break from '../util/break'
 import Api from '../../stores/api'
 
 export default class PostsNew extends Component {
@@ -42,7 +41,7 @@ export default class PostsNew extends Component {
 
   render() {
     return (
-      <Wrapper>
+      <Wrapper center={true}>
         <Text style={GlobalStyles.titleText}>
           Post Headline
         </Text>

@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableHighlight,
-  ScrollView,
   ListView,
   Dimensions,
   Platform
@@ -40,9 +39,9 @@ export class NotificationMenu extends Component {
     var _this = this
     this._store.events(this.user).then(function (s) {
       s.map(e => e.payload = _this._content(e))
-        _this._setEvents(s)
-        _this.setState({loaded: true})
-      })
+      _this._setEvents(s)
+      _this.setState({loaded: true})
+    })
   }
 
   /***************************************************************************/
@@ -99,7 +98,7 @@ export class NotificationMenu extends Component {
     return (
       <TouchableHighlight
         style={{flex: 1}}
-        onPress={() => { Actions.postsshow({ post: item.post }) }}>
+        onPress={() => { Actions.postsshow({ post: item.post, title: item.user.name + '\'s post' }) }}>
         <View style={styles.notificationItem}>
           {this._icon(item.type)}
           <Text
@@ -150,15 +149,48 @@ export class NotificationMenu extends Component {
 export class NotificationSwitch extends Component {
   constructor(props) {
     super(props)
+
+    this.user = props.user
+    this.post = props.post
+    this._store = new Api()
+    console.log(this.user.subscriptions)
+    console.log(this.post)
+    this.state = {
+      subscribed: this.user.subscriptions.indexOf(this.post.id) > 0
+    }
+  }
+
+  _toggleSubscription() {
+    let subscription = !this.state.subscribed
+    // @todo handle subscriptions serverside
+    // if (subscription) {
+    //   this._store.subcribe()
+    // } else {
+    //   this._store.unsubcribe()
+    // }
+    this.setState({ subscribed: subscription })
   }
 
   render() {
-    // todo post to server state on touch
-    return (
-      <MaterialIcon 
-        name='notifications-off'
-        style={[styles.notification, styles.notificationSwitch]}/>
-    )
+    if (this.state.subscribed) {
+      return (
+        <TouchableHighlight
+          onPress={this._toggleSubscription.bind(this)}>
+          <MaterialIcon 
+            name='notifications-active'
+            style={[styles.notification, styles.notificationSwitchActive]}/>
+        </TouchableHighlight>
+      )
+    } else {
+      return (
+        <TouchableHighlight
+          onPress={this._toggleSubscription.bind(this)}>
+          <MaterialIcon 
+            name='notifications-off'
+            style={[styles.notification, styles.notificationSwitchInactive]}/>
+        </TouchableHighlight>
+      )
+    }
   }
 }
 
@@ -177,6 +209,7 @@ const styles = StyleSheet.create({
   },
   notificationSwitchInactive: {
     color: Palette.accent,
+    backgroundColor: Palette.focus,
     borderWidth: 1,
     borderColor: Palette.accent,
   },

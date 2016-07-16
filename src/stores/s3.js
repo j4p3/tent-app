@@ -24,8 +24,8 @@ export default class S3 {
         } else {
           let location = t.substring(t.indexOf('<Location>') + '<Location>'.length, t.indexOf('</Location>'))
           return { location: location }
-        } 
-      })     
+        }
+      })
     })
   }
 }

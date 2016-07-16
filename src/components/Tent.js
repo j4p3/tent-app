@@ -19,10 +19,10 @@ import TentsShow from './tents/show'
 import PostsIndex from './posts/index'
 import PostsShow from './posts/show'
 import PostsNew from './posts/new'
+import ChatsShow from './chats/show'
 import NavDrawer from './nav/navdrawer'
 import Register from './auth/register'
 import Flash from './util/modal'
-import Board from './user/board'
 import { NotificationMenu, NotificationSwitch } from './user/notifications'
 import { GlobalStyles } from '../styles/global'
 import Api from '../stores/api'
@@ -40,14 +40,13 @@ export default class Tent extends React.Component {
 
   render() {
     return (
-      <Router createReducer={reducerCreate}
+      <Router createReducer={reducerCreate.bind(this)}
         drawerImage={require('../assets/ic_menu_black_48dp.png')}
         navigationBarStyle={{backgroundColor: 'white'}}>
         <Scene
           initial={true}
           key='register'
           title='keep it in the tent.'
-          titleStyle={GlobalStyles.titleText}
           component={Register}
           global={this}/>
         <Scene
@@ -63,13 +62,11 @@ export default class Tent extends React.Component {
             <Scene
                 key='flash'
                 title=''
-                titleStyle={GlobalStyles.titleText}
                 component={Flash}
                 hideTabBar={true}/>
               <Scene 
                 key='postsnew'
                 title='say something'
-                titleStyle={GlobalStyles.titleText}
                 component={PostsNew}
                 global={this}/>
               <Scene
@@ -83,8 +80,14 @@ export default class Tent extends React.Component {
               <Scene
                 key='postsshow'
                 component={PostsShow}
+                title='post'
+                renderRightButton={() => <NotificationSwitch
+                  user={this.state.user} />}
+                global={this}/>
+              <Scene
+                key='chatsshow'
+                component={ChatsShow}
                 title='chat'
-                titleStyle={GlobalStyles.titleText}
                 renderRightButton={() => <NotificationSwitch
                   user={this.state.user} />}
                 global={this}/>
@@ -100,6 +103,11 @@ const reducerCreate = params=>{
   const defaultReducer = Reducer(params);
   return (state, action)=>{
       console.log("ACTION:", action);
+      if (action.scene && (action.scene.name == 'postsshow' || action.scene.name == 'chatsshow')) {
+        action.scene.renderRightButton = () => {
+          return (<NotificationSwitch user={action.scene.global.state.user} post={action.scene.post}/>)
+        }
+      }
       return defaultReducer(state, action);
   }
 };

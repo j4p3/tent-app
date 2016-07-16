@@ -27,7 +27,7 @@ export default class GridList extends Component {
       <TouchableHighlight
         style={GlobalStyles.itemContainer}
         onPress={() => { Actions.tentsshow({ tent: item }) }}>
-        <View style={GlobalStyles.item}>
+        <View style={[GlobalStyles.itemLayout, GlobalStyles.itemPresentation]}>
           <Text style={GlobalStyles.titleText}>{item.name}</Text>
           <Text style={GlobalStyles.bodyText}>{item.desc}</Text>
         </View>

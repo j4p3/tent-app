@@ -60,6 +60,20 @@ export default class Api {
     })
   }
 
+  unsubscribe(subscription) {
+    let uri = '/subscriptions' + subscription.id
+    return fetch(API_URL + uri, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }).then((response) => {
+      let r = response.json()
+      return r
+    })
+  }
+
   interact(interaction) {
     let uri = '/interactions'
     return fetch(API_URL + uri, {

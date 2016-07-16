@@ -40,7 +40,7 @@ export default class Register extends Component {
         'createImage'
       ],
       step: 'login',
-      error: ''
+      error: ' '
     };
   }
 
@@ -79,7 +79,9 @@ export default class Register extends Component {
         skipBackup: true, 
         path: 'images'
       }
-    };
+    }
+
+    this._handleError('uploading image...')
 
     ImagePicker.showImagePicker(options, (response) => {
       if (response.error) {
@@ -93,7 +95,7 @@ export default class Register extends Component {
 
   _updateImage() {
     let _this = this
-    this._s3.upload(_this.state.avatarSource, this.state.avatarStorage)
+    this._s3.upload(this.state.avatarSource, this.state.avatarStorage)
       .then(r => {
         if (!r.error) {
           _this.props.global.setState({
@@ -101,10 +103,12 @@ export default class Register extends Component {
               id: _this.state.userId,
               name: _this.state.name,
               email: _this.state.email,
+              subscriptions: _this.state.subscription_ids,
               avatar: r.location
             }
           })
 
+          _this._handleError(' ')
           _this._store.updateUser({
             id: _this.state.userId,
             avatar: r.location
@@ -115,6 +119,7 @@ export default class Register extends Component {
                 _this._handleError()
               }
             })
+          _this._handleError(' ')
         } else {
           _this._handleError('The image didn\'t upload - try again?')
         }
@@ -132,11 +137,14 @@ export default class Register extends Component {
           user: {
             name: r.name,
             email: r.email,
-            id: r.id
+            id: r.id,
+            subscriptions: r.subscription_ids
           },
           tents: r.root_tents_and_descendants[0]
         })
+        _this._handleError(' ')
       } else {
+        _this.backStep()
         _this._handleError()
       }
     })
@@ -153,6 +161,8 @@ export default class Register extends Component {
     }).then(function (r) {
       if (!r.error) {
 
+        console.log(r)
+
         _this.setState({
           userId: r.id,
           avatarStorage: r.avatar_storage
@@ -162,11 +172,14 @@ export default class Register extends Component {
           user: {
             name: r.name,
             email: r.email,
-            id: r.id
+            id: r.id,
+            subscriptions: r.subscription_ids
           },
           tents: r.root_tents_and_descendants[0]
         })
+        _this._handleError(' ')
       } else {
+        _this.backStep()
         _this._handleError('That didn\'t work, sorry. Has an account already been created with this email?')
       }
     })
@@ -185,6 +198,7 @@ export default class Register extends Component {
             name: r.name,
             email: r.email,
             id: r.id,
+            subscriptions: r.subscription_ids,
             avatar: r.avatar
           },
           tents: r.root_tents_and_descendants[0]
@@ -206,7 +220,7 @@ export default class Register extends Component {
     // probably this means setting up tabs.
 
     return (
-      <Wrapper>
+      <Wrapper center={true}>
         <Text style={[GlobalStyles.bodyText, GlobalStyles.vSpace, { textAlign: 'center' }]}>{this.state.error}</Text>
         <Text style={[GlobalStyles.titleText,
                       { textAlign: 'center' }]}>
@@ -241,7 +255,7 @@ export default class Register extends Component {
 
   _createName() {
     return (
-      <Wrapper>
+      <Wrapper center={true}>
         <Text style={[GlobalStyles.bodyText, GlobalStyles.vSpace, { textAlign: 'center' }]}>{this.state.error}</Text>
         <Text style={[GlobalStyles.titleText, { textAlign: 'center' }]}>
           great, what's your name?
@@ -283,7 +297,7 @@ export default class Register extends Component {
 
   _login() {
     return (
-      <Wrapper>
+      <Wrapper center={true}>
         <Text style={[GlobalStyles.bodyText, GlobalStyles.vSpace, { textAlign: 'center' }]}>{this.state.error}</Text>
         <Text style={[GlobalStyles.titleText, GlobalStyles.vSpace, { textAlign: 'center' }]}>
           hi, who are you?</Text>
