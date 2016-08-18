@@ -72,6 +72,7 @@ export var GlobalStyles = StyleSheet.create({
 
   // GRID ITEM
   itemContainer: {
+    flex: 1,
     margin: 10
   },
   itemLayout: {
