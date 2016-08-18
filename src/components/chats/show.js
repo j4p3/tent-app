@@ -104,6 +104,7 @@ export default class ChatsShow extends Component {
   render() {
     // @todo weird chat margins
     // @todo proper full-height utility
+    // @todo PR gifted-messenger for custom durations
     return (
       <Wrapper omitPadding={true}>
         <GiftedMessenger
@@ -122,6 +123,7 @@ export default class ChatsShow extends Component {
             }
           }}
           messages={this.state.messages}
+          keyboardShouldPersistTaps={false}
           handleSend={this.handleSend.bind(this)}
           maxHeight={Dimensions.get('window').height - STATUS_BAR_HEIGHT - 64 - 36}
           loadEarlierMessagesButton={!this.state.allLoaded}

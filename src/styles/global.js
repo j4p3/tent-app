@@ -128,18 +128,18 @@ export var GlobalStyles = StyleSheet.create({
   // GLOBAL TEXT
   titleText: {
     fontFamily: 'Lato-Black',
-    fontSize: 16,
-    lineHeight: 16,
+    fontSize: 18,
+    lineHeight: 18,
     color: Palette.text
   },
   bodyText: {
     fontFamily: 'Open Sans',
-    fontSize: 12,
+    fontSize: 14,
     color: Palette.text
   },
   subText: {
     fontFamily: 'Open Sans',
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 15,
     color: Palette.accent
   }

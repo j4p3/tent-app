@@ -153,8 +153,6 @@ export class NotificationSwitch extends Component {
     this.user = props.user
     this.post = props.post
     this._store = new Api()
-    console.log(this.user.subscriptions)
-    console.log(this.post)
     this.state = {
       subscribed: this.user.subscriptions.indexOf(this.post.id) > 0
     }

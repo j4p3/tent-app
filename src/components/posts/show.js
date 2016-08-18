@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  ListView,
   View,
   Platform,
 } from 'react-native'
@@ -26,11 +27,14 @@ export default class PostsShow extends Component {
     super(props);
   
     this._messages = []
+    var messages = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1.text !== r2.text,
+    })
     this._api = new Api()
     this._store = this._api.store().child('tents/' + props.post.tent_id + '/posts/' + props.post.id + '/stream')
 
     this.state = {
-      messages: this._messages,
+      messages: messages.cloneWithRows(this._messages),
       isLoadingEarlierMessages: false,
       typingMessage: '',
       allLoaded: false
@@ -75,8 +79,8 @@ export default class PostsShow extends Component {
 
   _setMessages(messages) {
     // @todo are we killing messages on receipt?
-    this._messages = messages;
-    this.setState({ messages: messages });
+    this._messages = messages
+    this.setState({ messages: this.state.messages })
   }
 
   _handleSend(message = {}) {
@@ -157,7 +161,7 @@ export default class PostsShow extends Component {
         shadowOpacity={0}
         onPress={() => { this._close() }}>
           <Text style={[GlobalStyles.titleText, { color: Palette.focus, textAlign: 'center' }]}>
-          say thanks & close
+          close
           </Text></MKButton></View>
     )
   }
@@ -192,18 +196,6 @@ export default class PostsShow extends Component {
     )
   }
 
-  dont_render() {
-    return (
-      <Wrapper>
-        <ScrollView style={{height: Dimensions.get('window').height - STATUS_BAR_HEIGHT - 64}}>
-          <View style={{height: 500}}><Text>wat</Text></View>
-          <View style={{height: 500}}><Text>wat</Text></View>
-          <View style={{height: 500}}><Text>wat</Text></View>
-        </ScrollView>
-      </Wrapper>
-    )
-  }
-
   render() {
     // @todo use native keyboard API for hideaway
     // @todo send arrow https://github.com/FaridSafi/react-native-gifted-messenger/pull/127
@@ -212,7 +204,9 @@ export default class PostsShow extends Component {
 
     return (
       <Wrapper>
-        <ScrollView style={[
+        <ScrollView
+          keyboardShouldPersistTaps={true}
+          style={[
           styles.itemContainer,
           { height: Dimensions.get('window').height - STATUS_BAR_HEIGHT - 64
         }]}>
@@ -235,6 +229,17 @@ export default class PostsShow extends Component {
                   </Text></MKButton></View>
             </View>
 
+            <ListView
+              enableEmptySections={true}
+              dataSource={this.state.messages}
+              renderRow={(i) => {
+                <View style={styles.bubble}>
+                  <Text style={{color: Palette.focus}}>{i.text}</Text>
+                </View>
+              }}
+            >
+            </ListView>
+
             <GiftedMessenger
               ref={(c) => this._GiftedMessenger = c}
               styles={{
@@ -253,18 +258,19 @@ export default class PostsShow extends Component {
                 sendButton: {
                   marginTop: 11,
                   marginLeft: 10,
-                  color: Palette.accent
+                  color: Palette.neutral
                 },
                 loadEarlierMessagesButton: {
                   fontSize: 14,
                   color: Palette.accent
                 },
               }}
-
+              autoFocus={false}
               alwaysBounceVertical={false}
+              scrollAnimated={false}
               messages={this.state.messages}
               handleSend={this._handleSend.bind(this)}
-              maxHeight={225}
+              maxHeight={100}
               onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
               senderName={this.props.global.state.user.name}
               senderImage={{ uri: this.props.global.state.user.avatar }}
@@ -293,6 +299,7 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   itemFooter: {
+    flex: 1,
     backgroundColor: Palette.bgLight,
     borderWidth: 1,
     borderTopWidth: 0,
@@ -302,7 +309,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
     padding: 8,
     flexDirection: 'row'
-  }
+  },
+  bubble: {
+    color: Palette.accent,
+    borderRadius: 15,
+    paddingLeft: 14,
+    paddingRight: 14,
+    paddingBottom: 10,
+    paddingTop: 8,
+  },
 })
 const did = DeviceInfo.getUniqueID()
 const STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight

@@ -65,6 +65,7 @@ export default class PostsNew extends Component {
           textInputStyle={[GlobalStyles.text, { color: '#000' }]}
           highlightColor={Palette.accent}
           underlineSize={2}
+          numberOfLines={3}
           placeholder='the full details.'
           value={this.state.content}
           onChangeText={(t) => {

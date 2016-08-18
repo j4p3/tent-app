@@ -17,42 +17,72 @@ export class Wrapper extends View {
     super(props)
     this.parent = props.parent || { state: {loaded: true} }
     this.state = {
-      visibleHeight: Dimensions.get('window').height - STATUS_BAR_HEIGHT
+      visibleHeight: Dimensions.get('window').height - STATUS_BAR_HEIGHT,
+      keyboardHeight: 0
     }
   }
 
   componentDidMount() {
     let height = Dimensions.get('window').height - STATUS_BAR_HEIGHT
     this.setState({
-      height: Dimensions.get('window').height - STATUS_BAR_HEIGHT
+      visibleHeight: Dimensions.get('window').height - STATUS_BAR_HEIGHT,
+      keyboardHeight: 0
     })
 
     this.showListener = Keyboard.addListener('keyboardWillShow', this._keyboardWillShow.bind(this))
+    this.showedListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this))
     this.hideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide.bind(this))
+  }
+
+  componentWillUpdate(props, state) {
+    console.log('componentWillUpdate')
+    console.log(state)
+  }
+
+  componentDidUpdate(props, state) {
+    console.log('componentDidUpdate')
+    console.log(state)
   }
 
   componentWillUnmount() {
     Keyboard.removeSubscription(this.showListener)
+    Keyboard.removeSubscription(this.showedListener)
     Keyboard.removeSubscription(this.hideListener)
   }
 
   _keyboardWillShow(e) {
+    console.log('_keyboardWillShow')
+    console.log(e.endCoordinates)
     let height = Dimensions.get('window').height - STATUS_BAR_HEIGHT - e.endCoordinates.height
-    this.setState({visibleHeight: height})
+    this.setState({
+      visibleHeight: height,
+      keyboardHeight: e.endCoordinates.height
+    })
+  }
+
+  _keyboardDidShow(e) {
+    console.log('_keyboardDidShow')
+    console.log(e.endCoordinates)
   }
 
   _keyboardWillHide(e) {
+    console.log('_keyboardWillHide')
+    console.log(e.endCoordinates)
     this.setState({
-      visibleHeight: Dimensions.get('window').height - STATUS_BAR_HEIGHT
+      visibleHeight: Dimensions.get('window').height - STATUS_BAR_HEIGHT,
+      keyboardHeight: 0
     })
   }
 
   render() {
     if (this.parent.state.loaded) {
       return (
-        <View style={[
-            { height: this.state.visibleHeight, marginTop: STATUS_BAR_HEIGHT },
+        <View
+        keyboardShouldPersistTaps={false}
+          style={[
             styles.wrapper,
+            { height: this.state.visibleHeight,
+              marginTop: STATUS_BAR_HEIGHT },
             this.props.omitPadding ? { paddingHorizontal: 0 } : null,
             this.props.center ? { justifyContent: 'center' } : null
           ]}>
@@ -61,16 +91,16 @@ export class Wrapper extends View {
       )
     } else {
       return (
-        <View style={[styles.wrapper, { justifyContent: 'center' }]}>
+        <View style={[
+          styles.wrapper,
+          { height: this.state.visibleHeight,
+            marginTop: STATUS_BAR_HEIGHT,
+            justifyContent: 'center' }]}>
           <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: 12 }}>
             <Image
               style={styles.loadingImage}
               source={require('../../assets/loading.gif')}/>
           </View>
-          <Text style={[GlobalStyles.titleText,
-                        { textAlign: 'center', color: Palette.accent }]}>
-            hustling.
-          </Text>
         </View>
       )
     }
@@ -95,7 +125,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     // LAYOUT
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     paddingHorizontal: 10,
 
